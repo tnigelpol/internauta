@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'nauta',
     'rest_framework',
-    'crispy_forms'
+    'crispy_forms',
+    'accounts',
+    'profiles'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

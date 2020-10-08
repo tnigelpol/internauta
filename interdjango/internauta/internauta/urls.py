@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
 from nauta.views import (
     text_create_view,
     text_edit_view,
@@ -26,11 +26,21 @@ from nauta.views import (
     text_view,
     homepage_view,
     )
+from accounts.views import (
+    login_view,
+    logout_view,
+    register_view
+)
 
 urlpatterns = [
     path('', homepage_view),
     path('admin/', admin.site.urls),
+    path('login/', login_view),
+    path('logout/', logout_view),
+    path('register/', register_view),
     path('create/', text_create_view),
+    re_path(r'profiles?/', include('profiles.urls')),
+    re_path(r'api/profiles?/', include('profiles.api.urls')),
     path('<int:text_id>/view/', text_visualize_view),
     path('<int:text_id>/edit/', text_edit_view),
     path('<int:text_id>/visualize/', text_view),
