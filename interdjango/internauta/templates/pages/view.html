@@ -1,0 +1,68 @@
+<!--Pagina per la visualizzazione finale del testo-->
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="text-container" data-text-id={{text_id}}>
+
+</div>
+<script>
+   
+   
+    textEl = document.getElementById("text-container")
+    textid = textEl.getAttribute("data-text-id")
+    function loadText() {
+         
+        const xhr = new XMLHttpRequest()
+        const method = 'GET'
+        const url = `http://localhost:8000/${textid}/view`
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function(){
+            $("[data-toggle='popover']").popover(); 
+            //get list from response
+            const serverResponse = xhr.response
+                //SET GRAFICO
+            const data = serverResponse
+
+            textEl.innerHTML = formatText(data)
+            }
+        xhr.send()
+        }
+    function formatText(data){
+         
+        var finalPostStr = ""
+        finalPostStr += "<p>" + data.title + "</p>" + 
+                        "<p>" + data.subtitle + "</p>" + 
+                        "<p>" + data.author + "</p>" + 
+                        "<div style='width: 80%; height: 100%; top: 0; text-align: justify; text-justify: inter-word;'>"
+                        // + text.text + "</div>" 
+                        
+        var text = data.text
+        var ref = data.reference
+        var und = data.underlines
+        for (var key in ref){
+            text = text.replace(
+                new RegExp(" " + ref[key].word + " ", "g"),
+                " " +"<span data-content='S.: "
+                 + ref[key].synonym +
+                  " | T.: " + ref[key].translation +
+                  "' style='background: pink;'>" 
+                  + " " + ref[key].word + " " + "</span>"+ " ")
+        }                    
+        for (var key in und){
+            var str = und[key].grammar.toLowerCase().replace(new RegExp(" ", "g"), "_")
+            
+            text = text.replace(
+                new RegExp(" " + und[key].word + " ", "g"),
+                " " +
+                "<u class='" + str  +"'>" +  und[key].word + "</u>"+ " "
+            )
+        }
+        finalPostStr += text
+        finalPostStr +=  "</div>"               
+        return finalPostStr
+    }
+        loadText(textEl)
+</script>
+{% endblock content %}

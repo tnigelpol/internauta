@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<form method='POST' novalidate> {%csrf_token %}
+    <h2>  <p style="text-align: center;">{{ title }}</h2></p>
+    <div class="row">
+        <div class="col-6">
+          {{ form.title|as_crispy_field }}
+        </div>
+        <div class="col-6">
+          {{ form.subtitle|as_crispy_field }}
+        </div>
+      </div>
+      {{ form.author|as_crispy_field }}
+      {{ form.text|as_crispy_field }}
+    <button type='submit' class='btn btn-secondary' >{% if btn_label %} {{ btn_label }} {% else %}Save {% endif %}</button>
+
+</form>
+
+{% endblock content %}
