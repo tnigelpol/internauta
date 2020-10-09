@@ -1,0 +1,310 @@
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+        <style>
+            .btn{
+                display: inline;
+                font-size: 12px bold;
+                line-height: 1;
+                color: whitesmoke;
+                text-align: center;
+                font-weight: bold;
+                /*vertical-align: baseline;*/
+                border-radius: .25em;
+                /*border-radius: 50%;*/
+                /*border: 1px solid white;*/
+                background-color: cadetblue;
+                margin:1% auto;
+            }
+            .btn:hover{
+                background-color: darkcyan;
+                color: whitesmoke;
+            }
+    
+            #btnphr{
+                display: inline;
+                font-size: 12px bold;
+                line-height: 1;
+                color: #292929;
+                text-align: center;
+                
+                /*vertical-align: baseline;*/
+                border-radius: .25em;
+                /*border-radius: 50%;*/
+                /*border: 1px solid white;*/
+                background-color: whitesmoke;
+                margin:1% auto;
+            }
+            #btnphr:hover{
+                background-color: lightsalmon;
+                color: white;
+            }
+    
+            .highlight {background: lightsalmon; font-weight: bold; border-radius: .25em; color:whitesmoke;}
+    
+            #btnespr{
+                display: inline;
+                font-size: 12px bold;
+                line-height: 1;
+                color: #292929;
+                text-align: center;
+                text-decoration-line: underline;
+                 text-decoration-style: wavy;
+                 font-weight: bold;
+                
+                /*vertical-align: baseline;*/
+                border-radius: .25em;
+                /*border-radius: 50%;*/
+                /*border: 1px solid white;*/
+                background-color: whitesmoke;
+                margin:1% auto;
+            }
+            #btnespr:hover{
+                background-color: darkorange;
+                color: white;
+            }
+    
+    
+            .container-fluid{
+                background-color:#292929; 
+                width: 99%; 
+                text-align: center;
+                margin: 0 auto;
+                height: auto;
+                border-radius: .25em;
+            }
+            span {
+                position: relative;
+                display: inline-block;
+                
+            }
+            
+            span[data-content]:hover:after {
+                content: attr(data-content);
+                overflow: hidden;
+                white-space: nowrap;
+                font-family: Verdana;
+                font-size: 15px;
+                padding-left: 3px;
+                padding-right: 3px;
+                position: absolute;
+                top: -100%;
+                left: -50%;
+                border:1px solid black;
+                background-color: whitesmoke;
+                width:fit-content;
+                text-align: center;
+                border-radius: 5px;
+            }
+            u.progressive{
+                    text-decoration-style: double;
+                      -webkit-text-decoration-color: #696969; /* Safari */  
+                      text-decoration-color: #696969;
+                      border-bottom: 1px solid #696969;
+                }
+        
+                u.future{
+                    text-decoration-style: double;
+                      -webkit-text-decoration-color: #9ACD32; 
+                      text-decoration-color: #9ACD32;
+                      border-bottom: 1px solid #9ACD32;
+                }
+        
+                u.conditional{
+                    text-decoration-style: double;
+                      -webkit-text-decoration-color:rgb(10, 216, 216); 
+                      text-decoration-color: rgb(10, 216, 216);
+                      border-bottom: 1px solid rgb(10, 216, 216);
+                }
+        
+                u.passive{
+                    text-decoration-style: double solid;
+                      -webkit-text-decoration-color: #FFD700;
+                      text-decoration-color: #FFD700;
+                      border-bottom: 1px solid #FFD700;
+                }
+        
+                u.present_perfect_progr{
+                    text-decoration-style: double;
+                      -webkit-text-decoration-color: #FF4500;
+                      text-decoration-color: #FF4500;
+                      border-bottom: 1px solid #FF4500;
+                }
+        
+                u.past_perfect{
+                    text-decoration-style: double;
+                    -webkit-text-decoration-color: #ffb8b8;
+                    text-decoration-color: #ffb8b8;
+                    border-bottom: 1px solid #ffb8b8;
+                }
+        
+                u.present_perfect{
+                    text-decoration-style: double;
+                    -webkit-text-decoration-color: #546de5; 
+                    text-decoration-color: #546de5;
+                    border-bottom: 1px solid #546de5;
+                }
+        
+                u.past_perfect_progr{
+                    text-decoration-style: double;
+                    -webkit-text-decoration-color: #B33771; 
+                    text-decoration-color: #B33771;
+                    border-bottom: 1px solid #B33771;
+                }
+    
+                u.idiomatic_expressions{
+                    text-decoration-style:wavy;
+                    text-decoration-thickness: 2px;
+                      -webkit-text-decoration-color: darkorange; 
+                      text-decoration-color: darkorange;
+                      text-decoration-line: underline;
+                  }
+                  
+                  u.phrasal_verbs{
+                    background: lightsalmon; font-weight: bold; border-radius: .25em; color:whitesmoke;
+                  }
+                  .labelpastperf {
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #eb9a9a;
+                }
+        
+                /*label-danger*/
+                .labelpresperfprogr {
+        
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(226, 62, 2);
+                  }
+        
+                  /*label-default*/
+                  .labelprogressive {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: #696969;
+                  }
+        
+                  /*label-success*/
+                  .labelfuture {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(118, 177, 0);
+                  }
+        
+                  /*label-info*/
+                  .labelconditional {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(39, 199, 199);
+                  }
+        
+                  /*label-warning*/
+                  .labelpassive {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(223, 189, 0);
+                  }
+        
+                /*label-plus-blu*/
+                .labelpresperf {
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #546de5;
+                }
+        
+                /*label-plus-uva*/
+                .labelpastperfprogr{
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #B33771;
+                }
+        </style>
+        <title>Internauta</title>
+    </head>
+    <body>
+        <div class="container">
+            {% block content %}
+            {% endblock content %}
+            
+        </div>
+    </body>
+    </html>

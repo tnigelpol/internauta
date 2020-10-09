@@ -21,6 +21,7 @@ def text_create_view(request, *args, **kwargs):
         obj = form.save(commit=False)
         obj.user = user
         obj.save()
+        return redirect("/")
     context = { "form": form,
                 "btn_label": "Inserisci",
                 "title": "Inserimento testo"}
@@ -260,4 +261,14 @@ def text_view(request, text_id, *args, **kwargs):
 def homepage_view(request, *args, **kwargs):
     #context = { "text_id": text_id}
     return render(request, "pages/home.html")
-    
+
+
+@api_view(['GET'])
+def user_feed_view(request, username, *args, **kwargs):
+    qs = Text.objects.filter(id = username)
+    if not qs.exists():
+            return Response({}, status=404)
+
+@api_view(['GET'])
+def global_feed_view(request, *args, **kwargs):
+    return Response({}, status=404)
