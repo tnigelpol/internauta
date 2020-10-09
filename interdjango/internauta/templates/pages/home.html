@@ -1,9 +1,90 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if not request.user.is_authenticated %}
+<section class="jumbotron text-center">
+    <div class="container">
+      <h1>Internauta</h1>
+      <p class="lead text-muted">Breve presentazione di cosa facciamo</p>
+    </div>
+  </section>
+  <main role="main">
+
+    {% endif %}
+<main role="main">
+    <div class='album py-5 bg-light'>
+        <div class='container'>
+    
+            <div class='row' id="text-container">
+<script>
+    function formatTexts (data) {
+        var sting = ""
+        
+        for (t of data){
+        var preview = t.text.substring(0, 20) + "..."
+        sting += "<div class='col-md-4'><div class='card mb-4 shadow-sm'><rect width='100%' height='100%' fill='#55595c'/><text x='20%' y='15%' fill='#eceeef' dy='.3em'>"
+         + "<p>Title: " + t.title + "</p>" 
+         + "<p>Subtitle: " + t.subtitle + "</p>" 
+         + "<p>Author: " + t.author + "</p>" 
+         + "<p>Preview: " + preview + "</p>" 
+         + "</text><div class='card-body'><div class='d-flex justify-content-between align-items-center'><div class='btn-group'><button type='button' class='btn btn-sm btn-outline-secondary' onClick=handleView("+
+          t.id + ")>View</button><button type='button' class='btn btn-sm btn-outline-secondary' onClick=handleEdit("+
+          t.id + " >Edit</button></div></div> </div> </div> </div>"
+          }
+        return sting
+    }
+    textContEl = document.getElementById("text-container")
+</script>
 {% if request.user.is_authenticated %}
- feed
+
+ <script>
+        function loadFeed() {
+         
+         const xhr = new XMLHttpRequest()
+         const method = 'GET'
+         const url = '/feed'
+         const responseType = "json"
+         xhr.responseType = responseType
+         xhr.open(method, url)
+         xhr.onload = function(){
+             //get list from response
+             const serverResponse = xhr.response
+                 //SET GRAFICO
+             const data = serverResponse
+            const finalstr = formatTexts(data.results)
+            textContEl.innerHTML = finalstr
+             }
+         xhr.send()
+         }
+         loadFeed()
+ </script>
 {% else %}
  global
+
+ <script>
+
+         function loadGlobal() {
+         const xhr = new XMLHttpRequest()
+         const method = 'GET'
+         const url = '/global'
+         const responseType = "json"
+         xhr.responseType = responseType
+         xhr.open(method, url)
+         xhr.onload = function(){
+             //get list from response
+             const serverResponse = xhr.response
+                 //SET GRAFICO
+             const data = serverResponse
+             const finalstr = formatTexts(data.results)
+             textContEl.innerHTML = finalstr
+             }
+         xhr.send()
+         }
+         loadGlobal()
+</script>
 {% endif %}
+</div>
+</div>
+</div>
+</main>
 {% endblock content %}

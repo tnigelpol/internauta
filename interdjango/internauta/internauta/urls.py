@@ -25,6 +25,8 @@ from nauta.views import (
     add_underline_view,
     text_view,
     homepage_view,
+    user_feed_view,
+    global_feed_view,
     )
 from accounts.views import (
     login_view,
@@ -39,6 +41,7 @@ urlpatterns = [
     path('logout/', logout_view),
     path('register/', register_view),
     path('create/', text_create_view),
+    #APIs
     re_path(r'profiles?/', include('profiles.urls')),
     re_path(r'api/profiles?/', include('profiles.api.urls')),
     path('<int:text_id>/view/', text_visualize_view),
@@ -48,4 +51,7 @@ urlpatterns = [
     path('words/', retrieve_word_view),
     path('<str:lang>/grammar/', retrieve_grammars_view),
     path('add-underline/', add_underline_view),
+    path('feed/', user_feed_view),
+    path('global/', global_feed_view),
+
 ]

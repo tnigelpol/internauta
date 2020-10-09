@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.http import HttpResponse, JsonResponse, Http404
-from .forms import TextForm
 from django.conf import settings
+
+from .forms import TextForm
 from .models import Text, Word, Dictionary, Language, Grammar, Underline
 from .serializers import TextSerializer
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
 def text_create_view(request, *args, **kwargs):
@@ -262,13 +265,28 @@ def homepage_view(request, *args, **kwargs):
     #context = { "text_id": text_id}
     return render(request, "pages/home.html")
 
+def get_paginated_queryset_response(qs, request):
+    paginator = PageNumberPagination()
+    paginator.page_size = 20
+    paginated_qs = paginator.paginate_queryset(qs, request)
+    serializer = TextSerializer(paginated_qs, many=True, context={"request": request})
+    return paginator.get_paginated_response(serializer.data)
+
 
 @api_view(['GET'])
-def user_feed_view(request, username, *args, **kwargs):
-    qs = Text.objects.filter(id = username)
+def user_feed_view(request, *args, **kwargs):
+    user = request.user
+    if not user.is_authenticated:
+        return Response({}, status=401)
+    qs = Text.objects.feed(user)
     if not qs.exists():
             return Response({}, status=404)
+    return get_paginated_queryset_response(qs, request)
+    
 
 @api_view(['GET'])
 def global_feed_view(request, *args, **kwargs):
-    return Response({}, status=404)
+    qs=Text.objects.all()
+    if not qs.exists():
+            return Response({}, status=404)
+    return get_paginated_queryset_response(qs, request)

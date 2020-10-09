@@ -28,9 +28,10 @@ class TextQuerySet(models.QuerySet):
         followed_ids = []
         if profiles_exist:
             followed_ids = user.following.values_list("user__id", flat=True)
+        print("followed", followed_ids)
         return self.filter(
-            Q(author__id__in=followed_ids) |
-            Q(author=user)
+            Q(user__id__in=followed_ids) |
+            Q(user=user)
         ).distinct().order_by("-timestamp")
 
 class TextManager(models.Manager):
@@ -48,7 +49,7 @@ class Text (models.Model):
     underlines= models.ManyToManyField("Underline", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     objects = TextManager()
-    
+
 class Language(models.Model):
     name = models.CharField(blank=False, null=False, max_length=50)
 
