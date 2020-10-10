@@ -27,7 +27,7 @@ SECRET_KEY = '&&i-_@dpn3+l^-$jq1dj7p4$pt=_c^^6$68m_kak&jrm4bqv00'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+LOGIN_URL = "/login"
 GRAMMAR_TYPES = [
     "PRESENT", 
     "PAST",

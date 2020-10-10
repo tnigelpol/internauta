@@ -1,6 +1,7 @@
 {% extends 'base-no-nav.html' %}
 
 {% block content %}
+{% include "components/navbar.html" %}
 <script>
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
@@ -42,6 +43,9 @@ function isEmpty(obj) {
             document.getElementById("word").value = entry.original
             document.getElementById("synonym2").value = entry.synonym
             document.getElementById("translation2").value = entry.translated
+            }else{
+            document.getElementById("synonym2").value = "synonym"
+            document.getElementById("translation2").value = "translated"
             }
             }
         xhr.send(data)
