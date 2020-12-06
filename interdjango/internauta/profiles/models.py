@@ -16,6 +16,9 @@ class Profile(models.Model):
     bio = models.TextField(null=True, blank=True)
     followers = models.ManyToManyField(User, related_name='following', blank=True)
 
+    def __str__(self):
+        return self.user.username
+
 def user_did_save(sender, instance, created, *args, **kwargs):
     if created:
         Profile.objects.get_or_create(user=instance)

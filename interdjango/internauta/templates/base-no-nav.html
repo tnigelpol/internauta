@@ -1,4 +1,4 @@
-
+{% load static %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -7,8 +7,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
+        <!-- <link rel="stylesheet" href="{% static 'css/custom.css' %}"> -->
         <style>
+          .titles_stylo{
+            text-align: center; width: 84%; margin-top: 2rem;
+          }
+          div.text_stylo{
+      width: 80%; height: 100%; text-align: justify; text-justify: inter-word; margin-top: 3rem; margin-left: 2%;
+    }
+
+          
             .btn{
                 display: inline;
                 font-size: 12px bold;
@@ -85,23 +93,28 @@
                 display: inline-block;
                 
             }
+
+            
             
             span[data-content]:hover:after {
                 content: attr(data-content);
+                padding: 0.2rem;
                 overflow: hidden;
                 white-space: nowrap;
-                font-family: Verdana;
-                font-size: 15px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 20px;
                 padding-left: 3px;
                 padding-right: 3px;
                 position: absolute;
-                top: -100%;
-                left: -50%;
-                border:1px solid black;
-                background-color: whitesmoke;
+                text-transform: uppercase;
+                top: -150%;
+                left: 5%;
+                border:1px solid #292929;
+                border-radius: 15px 5px 5px 5px;
+                background-color: white;
                 width:fit-content;
                 text-align: center;
-                border-radius: 5px;
+                font-style: normal;
             }
             u.progressive{
                     text-decoration-style: double;
@@ -131,35 +144,35 @@
                       border-bottom: 1px solid #FFD700;
                 }
         
-                u.present_perfect_progr{
+                u.present-perfect-progr{
                     text-decoration-style: double;
                       -webkit-text-decoration-color: #FF4500;
                       text-decoration-color: #FF4500;
                       border-bottom: 1px solid #FF4500;
                 }
         
-                u.past_perfect{
+                u.past-perfect{
                     text-decoration-style: double;
                     -webkit-text-decoration-color: #ffb8b8;
                     text-decoration-color: #ffb8b8;
                     border-bottom: 1px solid #ffb8b8;
                 }
         
-                u.present_perfect{
+                u.present-perfect{
                     text-decoration-style: double;
                     -webkit-text-decoration-color: #546de5; 
                     text-decoration-color: #546de5;
                     border-bottom: 1px solid #546de5;
                 }
         
-                u.past_perfect_progr{
+                u.past-perfect-progr{
                     text-decoration-style: double;
                     -webkit-text-decoration-color: #B33771; 
                     text-decoration-color: #B33771;
                     border-bottom: 1px solid #B33771;
                 }
     
-                u.idiomatic_expressions{
+                u.idiomatic-expressions{
                     text-decoration-style:wavy;
                     text-decoration-thickness: 2px;
                       -webkit-text-decoration-color: darkorange; 
@@ -167,9 +180,60 @@
                       text-decoration-line: underline;
                   }
                   
-                  u.phrasal_verbs{
+                  u.phrasal-verbs{
                     background: lightsalmon; font-weight: bold; border-radius: .25em; color:whitesmoke;
                   }
+
+                  /*label-warning*/
+                  button#PAST {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: #292929;
+                    border: 1px white solid;
+                  }
+
+                  /*label-plus-blu*/
+                .labelpresperf {
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #546de5;
+                }
+
+                button#PRESENT-PERFECT {
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #546de5;
+                  border: 1px white solid;
+
+                }
+
                   .labelpastperf {
                     /*font-family: Label;*/
                   display: inline;
@@ -183,6 +247,24 @@
                   vertical-align: baseline;
                   border-radius: .25em;
                   background-color: #eb9a9a;
+
+                }
+
+                button#PAST-PERFECT {
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #eb9a9a;
+                  border: 1px white solid;
+
                 }
         
                 /*label-danger*/
@@ -201,6 +283,58 @@
                     border-radius: .25em;
                     background-color: rgb(226, 62, 2);
                   }
+
+                  /*label-danger*/
+                button#PRESENT-PERFECT-PROGR {
+                  /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: rgb(226, 62, 2);
+                  border: 1px white solid;
+
+                  }
+
+                /*label-plus-uva*/
+                .labelpastperfprogr{
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #B33771;
+                }
+
+                /*label-plus-uva*/
+                button#PAST-PERFECT-PROGR{
+                    /*font-family: Label;*/
+                  display: inline;
+                  padding: .2em .6em .3em;
+                  font-size: 80%;
+                  font-weight: bold;
+                  line-height: 1;
+                  color: white;
+                  text-align: center;
+                  white-space: nowrap;
+                  vertical-align: baseline;
+                  border-radius: .25em;
+                  background-color: #B33771;
+                  border: 1px white solid;
+
+                }
         
                   /*label-default*/
                   .labelprogressive {
@@ -216,6 +350,58 @@
                     vertical-align: baseline;
                     border-radius: .25em;
                     background-color: #696969;
+                  }
+
+                  /*label-default*/
+                  button#PROGRESSIVE {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: #696969;
+                    border: 1px white solid;
+
+                  }
+
+                  /*label-info*/
+                  .labelconditional {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(39, 199, 199);
+                  }
+
+                  /*label-info*/
+                  button#CONDITIONAL {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(39, 199, 199);
+                    border: 1px white solid;
+
                   }
         
                   /*label-success*/
@@ -233,9 +419,9 @@
                     border-radius: .25em;
                     background-color: rgb(118, 177, 0);
                   }
-        
-                  /*label-info*/
-                  .labelconditional {
+
+                  /*label-success*/
+                  button#FUTURE {
                     /*font-family: Label;*/
                     display: inline;
                     padding: .2em .6em .3em;
@@ -247,9 +433,11 @@
                     white-space: nowrap;
                     vertical-align: baseline;
                     border-radius: .25em;
-                    background-color: rgb(39, 199, 199);
+                    background-color: rgb(118, 177, 0);
+                    border: 1px white solid;
+
                   }
-        
+
                   /*label-warning*/
                   .labelpassive {
                     /*font-family: Label;*/
@@ -265,38 +453,60 @@
                     border-radius: .25em;
                     background-color: rgb(223, 189, 0);
                   }
-        
-                /*label-plus-blu*/
-                .labelpresperf {
+
+                  /*label-warning*/
+                  button#PASSIVE {
                     /*font-family: Label;*/
-                  display: inline;
-                  padding: .2em .6em .3em;
-                  font-size: 80%;
-                  font-weight: bold;
-                  line-height: 1;
-                  color: white;
-                  text-align: center;
-                  white-space: nowrap;
-                  vertical-align: baseline;
-                  border-radius: .25em;
-                  background-color: #546de5;
-                }
-        
-                /*label-plus-uva*/
-                .labelpastperfprogr{
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: rgb(223, 189, 0);
+                    border: 1px white solid;
+
+                  }
+
+                  /*label-warning*/
+                  button#IDIOMATIC-EXPRESSIONS {
                     /*font-family: Label;*/
-                  display: inline;
-                  padding: .2em .6em .3em;
-                  font-size: 80%;
-                  font-weight: bold;
-                  line-height: 1;
-                  color: white;
-                  text-align: center;
-                  white-space: nowrap;
-                  vertical-align: baseline;
-                  border-radius: .25em;
-                  background-color: #B33771;
-                }
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: darkorange;
+                    border: 1px white solid;
+
+                  }
+
+                  /*label-warning*/
+                  button#PHRASAL-VERBS {
+                    /*font-family: Label;*/
+                    display: inline;
+                    padding: .2em .6em .3em;
+                    font-size: 80%;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: white;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: baseline;
+                    border-radius: .25em;
+                    background-color: salmon;
+                    border: 1px white solid;
+
+                  }
         </style>
         <title>Internauta</title>
     </head>
@@ -304,7 +514,6 @@
         <div class="container">
             {% block content %}
             {% endblock content %}
-            
         </div>
     </body>
     </html>

@@ -1,36 +1,31 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<div class="navbar navbar-inverse navbar-fixed-top">
+<main>
+  <div class="navbar navbar-inverse navbar-fixed-top">
       
     <div id="navigation" class="container-fluid">
-      <div style="background-color: transparent;  color:transparent;  text-align:left; width: 5%; height:auto; margin-top: 0.5%;">
-        <a href="../index.html" >
-        <img src="../img/internautaLogo_B-NoTitolo.png" style="width: 100%; padding: 1%; margin-top: -1.8%;"> </img>
-      </a></div>
-      <div style="width: 100%; margin-top: -5%;">
+      <div style="width: 100%;">
+        <input id="labelpresperf" type="button" value="PresPerf" style="background-color: blue; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelpastperf" type="button" value="PastPerf" style="background-color: pink; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelpresperfprogr" type="button" value="PresPerfProgr" style="background-color: red; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelpastperfprogr" type="button" value="PastPerfProgr" style="background-color: purple; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelprogressive" type="button" value="Progr" style="background-color: grey; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelconditional" type="button" value="Conditional" style="background-color: lightseagreen; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelfuture" type="button" value="Future" style="background-color: green; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+        <input id="labelpassive" type="button" value="Passive" style="background-color: goldenrod; color: #fff; text-transform: uppercase; font-weight: bold;"/>
         
-        <span class="labelpresperf" ondblclick="dropPresPerf()"><span class="infolabel" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="have / has + past participle → happened in the past but not yet finished">PRESENT PERFECT</span></span>
-        <span class="labelpastperf" ondblclick="dropPastPerf()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="had + past participle → activity happened before another action">PAST PERFECT</span></span>
-        <span class="labelpresperfprogr"  ondblclick="dropPresPerfProgr()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="have / has + been + -ing form → the activity that has finished, whose results are visible now">PRESENT PERF. PROGR.</span></span>
-        <span class="labelpastperfprogr" ondblclick="dropPastPerfProgr()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="had + been + -ing form → activity that had a result in the past">PAST PERF. PROGR.</span></span>
-        <span class="labelprogressive" ondblclick="dropProgr()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Talk about an action that is happening now, or a temporary situation | Something that is not yet finished | Action that was in progress at a particular time in the past">PROGRESSIVE FORM</span></span>
-        <span class="labelconditional" ondblclick="dropCond()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="0 - always true | 1 - consequence of a possible action | 2 - cons. of a hypothetical action | 3 - possible cons. of an action that did not happen">IF (0-1-2-3) - CONDITIONAL</span></span>
-            
-          
-          
-        <span class="labelfuture" ondblclick="dropFut()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Will / Won't + verb | to be + Going to + verb | Pres. Continuous">FUTURE</span></span>
-        <span class="labelpassive" ondblclick="dropPassive()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="auxiliary verb BE + PAST PARTICIPLE">PASSIVE</span></span>
-        
-        <!-- <p class="underline" style="color: white;">Underlined words</p> margin-left: -33%;-->
       </div>
-        <button type="button" id="btnespr" class="btn" ondblclick="dropIdio()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Modi di dire ed espressioni">IDIOMATIC EXPRESSIONS</span></button>
-        <button type="button" id="Mybtn" class="btn">REMOVE UNDERLINE</button>
-        <button type="button" id="btnphr" class="btn" ondblclick="dropPhr()"><span data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content=""><mark class='highlight'><i>PHRASAL VERBS</i></mark></span></button>
+      <input id="btnespr" type="button" value="Espr" style="background-color: orangered; color: #fff; text-transform: uppercase; font-weight: bold;"/>
+      <button type="button" id="Mybtn" class="btn">REMOVE UNDERLINE</button>
+      <input id="btnphr" type="button" value="Phr" style="background-color: salmon; color: #fff; text-transform: uppercase; font-weight: bold;"/>
       <br/>
           
     </div>
   </div>
   
 {% include "pages/view.html" with text_id=text_id %}
+{% include "pages/side_view.html" with text_id=text_id %}
+
+
 {% endblock content %}

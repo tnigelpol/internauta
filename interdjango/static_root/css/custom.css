@@ -1,0 +1,475 @@
+/* your styles go here */
+/*==========FONTS==========*/
+
+@font-face {
+    font-family: Machine;
+    src: url("{% static 'fonts/modern-machine-cufonfonts/Modern\ Machine.woff' %}");
+  }
+
+@font-face {
+    font-family: FuturaHeavy;
+    src: url("{% static 'fonts/futura-lt-cufonfonts/FuturaLT-Heavy.woff' %}");
+}
+
+@font-face {
+    font-family: FuturaBold;
+    src: url("{% static 'fonts/futura-lt-cufonfonts/FuturaLT-Bold.woff' %}");
+}
+
+@font-face {
+    font-family: FuturaCondensed;
+    src: url("{% static 'fonts/futura-lt-cufonfonts/FuturaLT-Condensed.woff' %}");
+}
+
+@font-face {
+    font-family: FuturaBook;
+    src: url("{% static 'fonts/ufontscomfuturabook/ufontscomfuturabook.woff' %}");
+}
+
+@font-face {
+    font-family: Gill;
+    src: url("{% static 'fonts/gillsansstd/GillSansStd.woff' %}");
+}
+
+/*===== ROOT =====*/
+
+:root{
+    --first-color: #287271;
+    --second-color: #264653;
+    --water: #2a9d8f;
+    --green: #8ab17d;
+    --yellow: #e9c46a;
+    --orange-l: #efb366;
+    --orange-d: #ee8959;
+    --red: #e76f51;
+    --black: #1a1a1a;
+    
+}
+/*===== VARIABILI CSS =====*/
+:root{
+    --header-height: 3rem;
+    --font-semi: 600;
+  }
+  
+  /*===== Font e tipografia =====*/
+  :root{
+    --body-font: FuturaHeavy;
+    --big-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --normal-font-size: 0.938rem;
+  }
+  @media screen and (min-width: 768px){
+    :root{
+      --big-font-size: 3.5rem;
+      --h2-font-size: 2rem;
+      --normal-font-size: 1rem;
+    }
+  }
+  
+  /*===== Margini =====*/
+  :root{
+    --mb-1: 0.5rem;
+    --mb-2: 1rem;
+    --mb-3: 1.5rem;
+    --mb-4: 2rem;
+    --mb-5: 2.5rem;
+    --mb-6: 3rem;
+  }
+  
+  /*===== z index =====*/
+  :root{
+    --z-back: -10;
+    --z-normal: 1;
+    --z-tooltip: 10;
+    --z-fixed: 100;
+  }
+    /*===== LAYOUT =====*/
+    .bd-grid{
+    max-width: 1024px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-column-gap: 2rem;
+    width: calc(100% - 2rem);
+    margin-left: var(--mb-2);
+    margin-right: var(--mb-2);
+  }
+  .home__data{
+    justify-self: center;
+    margin: auto 0;
+}
+
+.home__title{
+    color: white;
+    font-size: 15vw;
+    text-align: center;
+    font-family: Machine;
+    margin-top: -5vh;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: var(--first-color);
+}
+.home__title2{
+  color: var(--first-color);
+  font-size: 15vw;
+  text-align: center;
+  font-family: Machine;
+  margin-top: -39vh;
+  margin-left: 1vw;
+}
+
+.home__subtitle{
+    justify-self: center;
+    color: var(--first-color);
+    font-size: 5vw;
+    text-align: center;
+    font-family: Machine;
+}
+
+.home__text{
+    margin: var(--mb-1);
+    color: var(--black);
+    font-size: 1.5vw;
+    text-align: center;
+    font-family: FuturaBold;
+}
+
+.home__button{
+    margin: var(--mb-6);
+    color: var(--black);
+    font-size: 1.5vw;
+    text-align: center;
+    font-family: FuturaBold;
+}
+.home__howB{
+    margin-left: var(--mb-3);
+    text-align: center;
+    font-family: FuturaBold;
+    background-color: transparent;
+    border: transparent;
+    color: var(--black);
+    text-decoration: none;
+}
+
+.home__howB:hover{
+    text-decoration: none;
+    color: var(--black);
+}
+
+.text{
+    margin-top: var(--mb-6);
+    text-transform: uppercase;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100vh;
+    text-align: left;
+}
+
+.text__title{
+    margin-top: var(--mb-6);
+    text-transform: uppercase;
+    color: var(--first-color);
+    font-family: FuturaCondensed;
+    text-align: left;
+}
+
+.text__subtitle{
+    justify-self: center;
+    color: var(--first-color);
+    font-size: 5vw;
+    font-family: FuturaCondensed;
+    text-align: left;
+}
+
+.text__text{
+    width: 80%;
+    margin-top: var(--mb-4);
+    color: var(--black);
+    font-size: 1.5vw;
+    text-align: left;
+    font-family: FuturaBold;
+}
+
+.text__seeB{
+    margin-top: var(--mb-3);
+    justify-self: center;
+    color: white;
+    font-size: 1.5vw;
+    font-family: FuturaBold;
+    text-align: left;
+}
+.file{
+    text-align: left;
+}
+
+.file__container{
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1,1fr);
+    column-gap: 2rem;
+    justify-items: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: var(--black);
+}
+
+.file__texts{
+    padding: var(--mb-3);
+    color: white;
+    font-size: 1.5vw;
+    text-align: left;
+    font-family: FuturaCondensed;
+    background-color: var(--black);
+}
+
+.file__projects{
+    margin: var(--mb-2);
+    text-align: center;
+    text-decoration: solid var(--black);
+    font-family: FuturaBold;
+}
+
+.file__cont{
+    background-color: white;
+    padding: var(--mb-3);
+}
+
+.file__name{
+    text-align: right;
+    margin-top: var(--mb-1);
+    color: white;
+}
+
+.file__f1{
+    padding: var(--mb-3);
+    background-color: var(--red);
+    border-radius: 5%;
+    width: 1fr;
+    height: 1fr;
+}
+
+.file__f2{
+    padding: var(--mb-3);
+    background-color: var(--yellow);
+    border-radius: 5%;
+    width: 1fr;
+    height: 1fr;
+}
+
+.file__f3{
+    padding: var(--mb-3);
+    background-color: var(--orange-d);
+    border-radius: 5%;
+    width: 1fr;
+    height: 1fr;
+}
+
+.file__otherB{
+    grid-column: 2/3;
+    margin-top: var(--mb-6);
+    background-color: var(--black);
+    color: white;
+    font-size: 1vw;
+    font-family: FuturaBold;
+}
+
+.file__view{
+    margin: 5vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5vw;
+}
+
+.files{
+    padding: var(--mb-1);
+    border-radius: 3%;
+    width: 1fr;
+    height: 40vh;
+    opacity: 0.9;
+    text-align: center;
+}
+
+.non_f{
+    padding: var(--mb-3);
+    background-color: var(--water);
+}
+
+.f_thriller{
+    padding: var(--mb-3);
+    background-color: var(--yellow);
+}
+
+.f_generic{
+    padding: var(--mb-3);
+    background-color: var(--orange-d);
+}
+
+.f_nocopy{
+    padding: var(--mb-3);
+    background-color: var(--black);
+    opacity: 0.5;
+}
+
+.f_news{
+    padding: var(--mb-3);
+    background-color: var(--black);
+}
+
+.f_classic{
+    padding: var(--mb-3);
+    background-color: var(--green);
+}
+
+.file__c{
+    background-color: white;
+    padding: var(--mb-4);
+    border-radius: 3%;
+}
+
+
+
+.lessons{
+    padding-left: 10vw;
+    text-transform: uppercase;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100vh;
+    text-align: left;
+    background-color: var(--second-color);
+}
+
+.lessons__title{
+    margin-top: var(--mb-6);
+    text-transform: uppercase;
+    color: white;
+    font-family: FuturaCondensed;
+    text-align: left;
+}
+
+.lessons__subtitle{
+    width: 60%;
+    justify-self: left;
+    color: white;
+    font-size: 3vw;
+    font-family: FuturaCondensed;
+    text-align: left;
+}
+
+.lessons__text{
+    width: 60%;
+    margin-top: var(--mb-4);
+    color: white;
+    font-size: 1.5vw;
+    text-align: left;
+    font-family: FuturaBold;
+}
+
+.lessons__contactB{
+    margin-top: var(--mb-3);
+    justify-self: left;
+    color: var(--black);
+    font-size: 1.5vw;
+    font-family: FuturaBold;
+    text-align: left;
+    background-color: white;
+}
+
+.trans{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100vh;
+    text-align: left;
+    background-color: var(--first-color);
+}
+
+.trans__data{
+    grid-column: 2/3;
+}
+
+.trans__title{
+    margin-top: var(--mb-3);
+    text-transform: uppercase;
+    color: white;
+    font-family: FuturaCondensed;
+    text-align: left;
+}
+
+.trans__subtitle{
+    justify-self: left;
+    color: white;
+    font-size: 7vw;
+    font-family: FuturaCondensed;
+    text-align: left;
+}
+
+.trans__text{
+    width: 60%;
+    color: white;
+    font-size: 1vw;
+    text-align: left;
+    font-family: FuturaBold;
+}
+
+.trans__contactB{
+    justify-self: left;
+    color: var(--black);
+    font-size: 1vw;
+    font-family: FuturaBold;
+    text-align: left;
+    background-color: white;
+}
+
+
+
+/* ===== MEDIA QUERIES=====*/
+@media screen and (max-width: 1000px){
+    body{
+      margin: 0;
+    }
+
+    .home__title{
+      color: white;
+      font-size: 15vw;
+      text-align: center;
+      font-family: Machine;
+      -webkit-text-stroke-width: 2px;
+      -webkit-text-stroke-color: var(--first-color);
+      }
+    .home__title2{
+      display: none;
+    }
+
+    
+  .section-title{
+    position: relative;
+    font-size: var(--h2-font-size);
+    color: var(--first-color);
+    margin-top: var(--mb-2);
+    margin-bottom: var(--mb-4);
+    text-align: center;
+  }
+  .section-title::after{
+    position: absolute;
+    content: "";
+    width: 64px;
+    height: 0.18rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 2rem;
+    background-color: var(--first-color);
+  }
+  .section{
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+    
+    .work__container{
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(1,1fr);
+      column-gap: 2rem;
+    }
+  }
+  
+  @media screen and (min-width: 1024px){
+    .bd-grid{
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>This is the result of your search</h2>
+
+<div class="container">
+  <div class="row">
+    <!-- Latest Posts -->
+    <main class="posts-listing col-lg-8"> 
+      <div class="container">
+        <div class="row">
+          <!-- post per comprendere le definizioni dentro {{...}} gurada models -->
+          {% for text in texty_searchy %}
+          <div class="post col-xl-4">
+            {% for cat in text.categories.all %}
+            <div class="{{ cat }}">
+              <div class="post-meta d-flex justify-content-between">
+                <!-- <div class="date meta-last">20 May | 2016</div> -->
+              <div class="category"   style="margin-left: 5%; color: white; width: 100%;"> 
+                <a href="#"   style="color: white;">{{ cat }}</a>
+                {% endfor %}
+              </div>
+              </div><a href="/{{ text.id }}/visualize/" style="display: flex; background-color: white; padding: 1rem; height: 25vh; width: 100%;">
+                <h3 class="h4" style="text-align: center; margin: auto auto;">{{ text.author }}</h3>
+                <hr>
+                <h3 class="h4" style="text-align: center; margin: auto auto;  font-size: 1vw;">{{ text.title }}</h3>
+              </a>
+                <!-- <p class="text-muted">{{ text.text|slice:":101" }}...</p></a> -->
+              <footer class="post-footer d-flex align-items-center">
+                <a href="#" class="author d-flex align-items-center flex-wrap">
+                <span class="title"  style="color: white;">{{ text.user.username }}</span></a>
+                <span class="title"  style="color: white;">Chapter: {{ text.chapter }}</span>
+              </footer>
+              
+              <!-- <div class="date"><i class="icon-clock"></i>{{ text.timestamp|timesince }} ago</div> -->
+            </div>
+            <div class='btn-group' style="display: grid; grid-template: 1fr / repeat(3, 1fr); margin-top: 0.5rem;">
+              <a type='button' style="text-align: center; border: 1px solid; background-color: #1a1a1a60; padding: 0.5rem; border-radius: 5%; color: white;" href="/{{ text.id }}/edit">Edit</a>
+              <a type='button' style="text-align: center; border: 1px solid; background-color: #1a1a1a4b; padding: 0.5rem; border-radius: 5%; color: white;" href="/{{ text.id }}/update">Update</a>
+              <a type='button' style="text-align: center; border: 1px solid; background-color: #1a1a1a23; padding: 0.5rem; border-radius: 5%; color: white;" href="/{{ text.id }}/delete">Delete</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination pagination-template d-flex justify-content-center">
+            {% if queryset.has_previous %}
+            <li class="page-item"><a href="?{{ page_request_var }}={{ queryset.previous_page_number }}" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+            {% endif %}
+            <li class="page-item"><a href="?{{ page_request_var }}={{ queryset.number }}" class="page-link active">{{ queryset.number }}</a></li>
+            {% if queryset.has_next %}
+            <li class="page-item"><a href="?{{ page_request_var }}={{ queryset.next_page_number }}" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}

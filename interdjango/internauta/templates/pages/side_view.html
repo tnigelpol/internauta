@@ -1,0 +1,22 @@
+<aside class="col-lg-4">
+  
+  <!-- Widget [Latest Posts Widget]        -->
+  <div class="widget latest-posts">
+    <header>
+      <h3 class="h6">Latest Posts</h3>
+    </header>
+    <div class="blog-posts">
+      <a href="{{ text.get_absolute_url }}">
+      {% for text in text_title %}
+        <div class="item d-flex align-items-center">
+          <div class="title"><strong>{{ text.title }}</strong>
+            <div class="d-flex align-items-center">
+              <div class="views"><i class="icon-eye"></i>{{ text.view_count }}</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </a>
+    </div>
+  </div>
+</aside>

@@ -1,11 +1,12 @@
 from django import forms
-from .models import Text
+from nauta.models import Text, Category
 
 MAX_LENGTH=50
 class TextForm(forms.ModelForm):
     class Meta:
         model = Text
-        fields = ['title', 'subtitle', 'author', 'text']
+        fields = ['title', 'subtitle', 'author', 'text', 'categories', 'previous_post', 'next_post', 'firstchapter', 'nocopy', 'chapter']
+
     def clean_title(self):
         title = self.cleaned_data.get("title")
         if len(title) > MAX_LENGTH:

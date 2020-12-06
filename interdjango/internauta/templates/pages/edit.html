@@ -1,104 +1,102 @@
 {% extends 'base-no-nav.html' %}
-
+{% load static %}
 {% block content %}
-{% include "components/navbar.html" %}
 <script>
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}
-    function getSuggestions(word){
-      const original = document.getElementById("original-select").value
-      const translated = document.getElementById("translated-select").value
-      if(!(original && translated)){
-        alert("Please select both languages")
-        return
+  function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+  function getSuggestions(word) {
+    const original = document.getElementById("original-select").value
+    const translated = document.getElementById("translated-select").value
+    if (!(original && translated)) {
+      alert("Please select both languages")
+      return
     }
-      const data = JSON.stringify({
-        word: word.trim(),
-        original: original,
-        translated: translated,
-        })
-      const xhr = new XMLHttpRequest()
-        const method = 'POST'
-        const url = "/words/"
-        const responseType = "json"
-        xhr.responseType = responseType
-        const csrftoken = getCookie('csrftoken');
-        xhr.open(method, url)
+    const data = JSON.stringify({
+      word: word.trim(),
+      original: original,
+      translated: translated,
+    })
+    const xhr = new XMLHttpRequest()
+    const method = 'POST'
+    const url = "/words/"
+    const responseType = "json"
+    xhr.responseType = responseType
+    const csrftoken = getCookie('csrftoken');
+    xhr.open(method, url)
 
-        xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.setRequestHeader("Content-Type", "application/json")
 
-        if(csrftoken) {
-        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-        xhr.setRequestHeader("X-CSRFToken", csrftoken)
-        }
-        xhr.onload = function(){
-            //get list from response
-            const serverResponse = xhr.response
-                //SET GRAFICO
-            const entry = serverResponse
-            if (!isEmpty(entry))
-            {
-            document.getElementById("word").value = entry.original
-            document.getElementById("synonym2").value = entry.synonym
-            document.getElementById("translation2").value = entry.translated
-            }else{
-            document.getElementById("synonym2").value = "synonym"
-            document.getElementById("translation2").value = "translated"
-            }
-            }
-        xhr.send(data)
+    if (csrftoken) {
+      xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
     }
-
-    function callword(){
-      var sel = window.getSelection();
-     // $("#word").val(sel);
-     
-     document.getElementById("word").value=sel;
-      getSuggestions(document.getElementById("word").value)      
-    }
-
-    //Utile per attacchi XSS
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
+    xhr.onload = function () {
+      //get list from response
+      const serverResponse = xhr.response
+      //SET GRAFICO
+      const entry = serverResponse
+      if (!isEmpty(entry)) {
+        document.getElementById("word").value = entry.original
+        document.getElementById("synonym2").value = entry.synonym
+        document.getElementById("translation2").value = entry.translated
+      } else {
+        document.getElementById("synonym2").value = "synonym"
+        document.getElementById("translation2").value = "translated"
       }
-      return cookieValue;
+    }
+    xhr.send(data)
   }
 
-function handleWordSubmit(){
+  function callword() {
+    var sel = window.getSelection();
+    // $("#word").val(sel);
+
+    document.getElementById("word").value = sel;
+    getSuggestions(document.getElementById("word").value)
+  }
+
+  //Utile per attacchi XSS
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function handleWordSubmit() {
     const grammar = document.getElementById("type-select").value ? document.getElementById("type-select").value : "none"
     const original = document.getElementById("original-select").value
     const translated = document.getElementById("translated-select").value
-    var word =  document.getElementById("word").value
+    var word = document.getElementById("word").value
     word = word.trim()
-    const synonym =  document.getElementById("synonym").value
+    const synonym = document.getElementById("synonym").value
     const translation = document.getElementById("translation").value
     const text_id = document.getElementById("cont").getAttribute("data-text-id")
-    if(!(original && translated && word && synonym && translation)){
-        alert("Please compile all the fields")
-        return
+    if (!(original && translated && word && synonym && translation)) {
+      alert("Please compile all the fields")
+      return
     }
     const url = "/add-entry/"
     const method = "POST"
     const data = JSON.stringify({
-    id: text_id,
-    word: word,
-    synonym: synonym,
-    translation: translation,
-    original: original,
-    translated: translated,
-    grammar: grammar
+      id: text_id,
+      word: word,
+      synonym: synonym,
+      translation: translation,
+      original: original,
+      translated: translated,
+      grammar: grammar
     })
     const xhr = new XMLHttpRequest()
     const csrftoken = getCookie('csrftoken');
@@ -106,173 +104,188 @@ function handleWordSubmit(){
 
     xhr.setRequestHeader("Content-Type", "application/json")
 
-    if(csrftoken) {
-        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    if (csrftoken) {
+      xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
     }
-    xhr.onload = function() {
-    // TODO: highlightText()
-        document.getElementById("word").value = ""
-        document.getElementById("synonym").value = ""
-        document.getElementById("translation").value = ""
-        textEl = document.getElementById("text-container")
-        loadText(textEl)
-    }
-    xhr.send(data)
-    return
-}
-
-function addsyn(){
-  var syn = document.getElementById("synonym2").value
-     // $("#word").val(sel);
-     
-     document.getElementById("synonym").value = syn;
-
-}
-
-function addtr(){
-  var syn = document.getElementById("translation2").value
-     // $("#word").val(sel);
-     
-     document.getElementById("translation").value = syn;
-
-}
-function showButts(){
-  const original = document.getElementById("original-select").value
-  loadButtons(original)
-}
-function underline(typology){
-  console.log(typology)
-  var word =  document.getElementById("word").value
-  const text_id = document.getElementById("cont").getAttribute("data-text-id")
-  word = word.trim()
-  const url = "/add-underline/"
-    const method = "POST"
-    const data = JSON.stringify({
-    word: word,
-    typology: typology,
-    text_id: text_id
-    })
-    const xhr = new XMLHttpRequest()
-    const csrftoken = getCookie('csrftoken');
-    xhr.open(method, url)
-
-    xhr.setRequestHeader("Content-Type", "application/json")
-
-    if(csrftoken) {
-        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-        xhr.setRequestHeader("X-CSRFToken", csrftoken)
-    }
-    xhr.onload = function() {
+    xhr.onload = function () {
+      // TODO: highlightText()
+      document.getElementById("word").value = ""
+      document.getElementById("synonym").value = ""
+      document.getElementById("translation").value = ""
       textEl = document.getElementById("text-container")
       loadText(textEl)
     }
     xhr.send(data)
     return
-}
-function loadButtons(language) {
-        const xhr = new XMLHttpRequest()
-        const method = 'GET'
-        const url = `/${language}/grammar/`
-        const responseType = "json"
-        xhr.responseType = responseType
-        xhr.open(method, url)
-        xhr.onload = function(){
-            //get list from response
-            const serverResponse = xhr.response
-                //SET GRAFICO
-            const resp = serverResponse
-            
-            var finalPostStr = ""
-            for (var key in resp){
-              var str = resp[key] 
-              var str2 = "'underline("+ str +")'"
-              finalPostStr += "<p> <button type='button' class='btn btn-primary' id='" + str + "' onClick='underline(this.id)'>"+ resp[key] +"</button></p>"
-            }
-            buttEl = document.getElementById("grammar-buttons")
-            buttEl.innerHTML = finalPostStr
-            }
-        xhr.send()
-        }
+  }
+
+  function addsyn() {
+    var syn = document.getElementById("synonym2").value
+    // $("#word").val(sel);
+
+    document.getElementById("synonym").value = syn;
+
+  }
+
+  function addtr() {
+    var syn = document.getElementById("translation2").value
+    // $("#word").val(sel);
+
+    document.getElementById("translation").value = syn;
+
+  }
+  function showButts() {
+    const original = document.getElementById("original-select").value
+    loadButtons(original)
+  }
+  function underline(typology) {
+    console.log(typology)
+    var word = document.getElementById("word").value
+    const text_id = document.getElementById("cont").getAttribute("data-text-id")
+    word = word.trim()
+    const url = "/add-underline/"
+    const method = "POST"
+    const data = JSON.stringify({
+      word: word,
+      typology: typology,
+      text_id: text_id
+    })
+    const xhr = new XMLHttpRequest()
+    const csrftoken = getCookie('csrftoken');
+    xhr.open(method, url)
+
+    xhr.setRequestHeader("Content-Type", "application/json")
+
+    if (csrftoken) {
+      xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    }
+    xhr.onload = function () {
+      textEl = document.getElementById("text-container")
+      loadText(textEl)
+    }
+    xhr.send(data)
+    return
+  }
+  function loadButtons(language) {
+    const xhr = new XMLHttpRequest()
+    const method = 'GET'
+    const url = `/${language}/grammar/`
+    const responseType = "json"
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function () {
+      //get list from response
+      const serverResponse = xhr.response
+      //SET GRAFICO
+      const resp = serverResponse
+
+      var finalPostStr = ""
+      for (var key in resp) {
+        var str = resp[key]
+        var str2 = "'underline(" + str + ")'"
+        finalPostStr += "<p> <button type='button' class='btn btn-primary' id='" + str + "' onClick='underline(this.id)'>" + resp[key] + "</button></p>"
+      }
+      buttEl = document.getElementById("grammar-buttons")
+      buttEl.innerHTML = finalPostStr
+    }
+    xhr.send()
+  }
 </script>
 <div class="row">
-    <div class="col" style="width: 15%; height: 100%; top: 0; left: 0; position: fixed; overflow: auto; background-color: #363636;">
-        <label for="original-select">Original language:</label>
-
-        <select class="form-control" name="original" id="original-select" onchange="showButts()">
-            <option value="">--Please choose an option--</option>
-            <option value="ita">Italian</option>
-            <option value="eng">English</option>
-            <option value="de">German</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="prt">Portuguese</option>
-        </select>     
-        <label for="translated-select">Translated language:</label>
-
-        <select class="form-control" name="translated" id="translated-select">
-            <option value="">--Please choose an option--</option>
-            <option value="ita">Italian</option>
-            <option value="eng">English</option>
-            <option value="de">German</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="prt">Portuguese</option>
-        </select>     
-        <label for="type-select">Selected type:</label>
-
-        <select class="form-control" name="type" id="type-select">
-            <option value="">--Optional--</option>
-            <option value="noun">Noun</option>
-            <option value="verb">Verb</option>
-            <option value="adjective">Adjective</option>
-            <option value="adverb">Adverb</option>
-            <option value="phrasal_v">Phrasal verb</option>
-            <option value="idiom">Idiom</option>
-            <option value="other">Other</option>
-        </select>     
-        <form id="fupForm" name="form1" method="post" style="width: 100%; margin-top: 50%;" >
-          <div class="form-group" style=" margin-top: 10px;">
-            <!-- <label for="word" style="font-size: small; margin-bottom: 0;">WORD:</label> -->
-            <input type="text" class="form-control" id="word" placeholder="word" name="word" style="text-align: center; height: 50px;">
-          </div>
-          <div class="form-group">
-            <!-- <label for="synonym" style="font-size: small; margin-bottom: 0;">SYNONYM:</label> -->
-            <input type="text" class="form-control" id="synonym" placeholder="synonym" name="synonym" style="text-align: center; height: 50px; background-color: #FAF7EE;">
-          </div>
-          <div class="form-group">
-            <!-- <label for="translation" style="font-size: small; margin-bottom: 0;">TRANSLATION:</label> -->
-            <input type="text" class="form-control" id="translation" placeholder="translation" name="translation" style="text-align: center; height: 50px; background-color: #F3E3BF;">
-          </div>
-          <input type="button" name="save" class="btn btn-primary" value="Save to database" id="butsave" onclick="handleWordSubmit()">
-        </form>
-        <div id="success" style="font-size:10px; display:none; width: 30px; height: 30px; float: right; margin-right: 50px; margin-bottom: 50px; margin-top: -50px; background-color:limegreen; color: honeydew;">
-          <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> -->
-        </div>
-    </div>
-
-    <div class="col" style="width: 100%; height: 100%; margin-left: 8%; top: 0; text-align: justify;
-    text-justify: inter-word;" id="cont" data-text-id={{text_id}}>
-        <div class="text" id="text-div" onclick="callword()">
-        {% include "pages/view.html" with text_id=text_id %}
-        </div>
-    </div>
+  <div class="col"
+    style="width: 15%; height: 100%; top: 0; left: 0; position: fixed; overflow: auto; background-color: #363636;">
     
-    <div class="col" id="lateral-r" style="width: 20%; height: 100%; top: 0; right: 0; position: fixed; overflow: auto; background-color: #363636;">
-      <div style="margin-top: 10%;">
+    <label for="original-select" style="margin-top: 10%; color: white;">Original language:</label>
+    <select class="form-control" name="original" id="original-select" onchange="showButts()">
+      <option value="">--Please choose an option--</option>
+      <option value="ita">Italian</option>
+      <option value="eng">English</option>
+      <option value="de">German</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="prt">Portuguese</option>
+    </select>
+    <label for="translated-select" style="color: white;">Translated language:</label>
+
+    <select class="form-control" name="translated" id="translated-select">
+      <option value="">--Please choose an option--</option>
+      <option value="ita">Italian</option>
+      <option value="eng">English</option>
+      <option value="de">German</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="prt">Portuguese</option>
+    </select>
+    <label for="type-select" style="color: white;">Selected type:</label>
+
+    <select class="form-control" name="type" id="type-select">
+      <option value="">--Optional--</option>
+      <option value="noun">Noun</option>
+      <option value="verb">Verb</option>
+      <option value="adjective">Adjective</option>
+      <option value="adverb">Adverb</option>
+      <option value="phrasal_v">Phrasal verb</option>
+      <option value="idiom">Idiom</option>
+      <option value="other">Other</option>
+    </select>
+
+    <a href="/feed">
+      <img class="img_logo" src="{% static 'img/INTERLINGO_logo.png' %}" style="border: 0px solid; border-radius: 50%; margin-top: 5vh; margin-left: 3vw; width: 5rem; background-color: white;"/>
+    </a>
+    
+
+    <form id="fupForm" name="form1" method="post" style="width: 100%; margin-top: 20%;">
+      <div class="form-group" style="margin-top: 10px;">
+        <!-- <label for="word" style="font-size: small; margin-bottom: 0;">WORD:</label> -->
+        <input type="text" class="form-control" id="word" placeholder="word" name="word"
+          style="text-align: center; height: 50px;">
+      </div>
       <div class="form-group">
         <!-- <label for="synonym" style="font-size: small; margin-bottom: 0;">SYNONYM:</label> -->
-        <input type="text" class="form-control" id="synonym2" placeholder="synonym" name="synonym" style="text-align: center; height: 50px; background-color: #FAF7EE;" onclick="addsyn()" readonly>
+        <input type="text" class="form-control" id="synonym" placeholder="synonym" name="synonym"
+          style="text-align: center; height: 50px; background-color: #FAF7EE;">
       </div>
       <div class="form-group">
         <!-- <label for="translation" style="font-size: small; margin-bottom: 0;">TRANSLATION:</label> -->
-        <input type="text" class="form-control" id="translation2" placeholder="translation" name="translation" style="text-align: center; height: 50px; background-color: #F3E3BF;" onclick="addtr()" readonly>
+        <input type="text" class="form-control" id="translation" placeholder="translation" name="translation"
+          style="text-align: center; height: 50px; background-color: #F3E3BF;">
+      </div>
+      <input type="button" name="save" class="btn btn-primary" value="Save to database" id="butsave"
+        onclick="handleWordSubmit()">
+    </form>
+    <div id="success"
+      style="font-size:10px; display:none; width: 30px; height: 30px; float: right; margin-right: 50px; margin-bottom: 50px; margin-top: -50px; background-color:limegreen; color: honeydew;">
+      <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> -->
+    </div>
+  </div>
+
+  <div class="col" style="width: 100%; height: 100%; margin-left: 8%; top: 0; text-align: justify;
+    text-justify: inter-word;" id="cont" data-text-id={{text_id}}>
+    <div class="text" id="text-div" onclick="callword()">
+      {% include "pages/view.html" with text_id=text_id %}
+    </div>
+  </div>
+
+  <div class="col" id="lateral-r"
+    style="width: 20%; height: 100%; top: 0; right: 0; position: fixed; overflow: auto; background-color: #363636;">
+    <div style="margin-top: 10%;">
+      <div class="form-group">
+        <!-- <label for="synonym" style="font-size: small; margin-bottom: 0;">SYNONYM:</label> -->
+        <input type="text" class="form-control" id="synonym2" placeholder="synonym" name="synonym"
+          style="text-align: center; height: 50px; background-color: #FAF7EE;" onclick="addsyn()" readonly>
+      </div>
+      <div class="form-group">
+        <!-- <label for="translation" style="font-size: small; margin-bottom: 0;">TRANSLATION:</label> -->
+        <input type="text" class="form-control" id="translation2" placeholder="translation" name="translation"
+          style="text-align: center; height: 50px; background-color: #F3E3BF;" onclick="addtr()" readonly>
       </div>
     </div>
     <div id="grammar-buttons"></div>
-    </div>
+  </div>
 </div>
 
 {% endblock content %}
