@@ -396,7 +396,13 @@ def global_feed_view(request, *args, **kwargs):
 @api_view(['GET'])
 def text_delete(request, text_id):
     text_to_delete = Text.objects.filter(id = text_id)
+    user = request.user
+    if not user.is_authenticated:
+        return Response({"message" : "you are not authenticated"}, status=401)
     if not text_to_delete.exists():
-            return Response({}, status=404)
-    obj = text_to_delete.delete()
+        return Response({"message" : "this post does not exists"}, status=404)
+    if text_to_delete.user == user:
+        obj = text_to_delete.delete()
+    else:
+        return Response({"message" : "this is not your post to delete"}, status=404)
     return redirect("/feed")

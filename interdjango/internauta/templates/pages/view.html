@@ -41,6 +41,7 @@
         var text = data.text
         var ref = data.reference
         var und = data.underlines
+        //crea una nuova regex
         for (var key in ref){
             text = text.replace(
                 new RegExp(" " + ref[key].word + " ", "g"),
