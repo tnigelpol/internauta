@@ -44,20 +44,20 @@
         //crea una nuova regex
         for (var key in ref){
             text = text.replace(
-                new RegExp(" " + ref[key].word + " ", "g"),
+                new RegExp(" " + ref[key].word, "g").ignoreCase,
                 " " +"<span data-content='S.: "
                  + ref[key].synonym +
                   " | T.: " + ref[key].translation +
                   "' style='font-style: italic;'>" 
-                  + " " + ref[key].word + " " + "</span>"+ " ")
+                  + " " + ref[key].word + " " + "</span>")
         }                    
         for (var key in und){
             var str = und[key].grammar.toLowerCase().replace(new RegExp(" ", "g"), "_")
             
             text = text.replace(
-                new RegExp(" " + und[key].word + " ", "g"),
+                new RegExp(" " + und[key].word , "g"),
                 " " +
-                "<u class='" + str  +"'>" +  und[key].word + "</u>"+ " "
+                "<u class='" + str  +"'>" +  und[key].word + "</u>"
             )
         }
         finalPostStr += text
