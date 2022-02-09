@@ -15,7 +15,7 @@ import os
 import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
@@ -29,7 +29,7 @@ SECRET_KEY = '&&i-_@dpn3+l^-$jq1dj7p4$pt=_c^^6$68m_kak&jrm4bqv00'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['weavedtextbeta.herokuapp.com']
+ALLOWED_HOSTS = ['internasuta.herokuapp.com']
 LOGIN_URL = "/login"
 GRAMMAR_TYPES = [
     "PRESENT", 
@@ -144,10 +144,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATIC_URL = '/static/'
-# MEDIA_URL = '/media/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
-# VENV_PATH = os.path.dirname(BASE_DIR)
-# STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
-# MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
+VENV_PATH = os.path.dirname(BASE_DIR)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
