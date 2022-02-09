@@ -1,0 +1,227 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  /*PC*/
+  @media screen and (min-width: 768px) {
+    /* .container{
+      width: 100%;
+    } */
+
+    div.row{
+      display: grid;
+      grid-template-columns: 10vw 8fr 1fr;
+      grid-template-rows: auto;
+    }
+
+    div.col_l{ 
+      grid-column: 1/2;
+      grid-row: auto;
+      height: 98vh;
+      /* position: fixed; */
+      position: sticky;
+      top: 0;
+      left: 0;
+    }
+
+    div.selColL{
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      justify-content: center;
+      margin-left: 0.5rem;
+    }
+
+    select.selForm{
+      height: 4vh;
+    }
+
+    div.logoColL{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .imgLogo{
+      width: 3rem;
+      margin: 5px;
+    }
+
+  .grabCollapse{
+    width: 1rem;
+    height: 1rem;
+    color: #505050;
+    bottom: 0;
+  }
+    
+    #formMove{
+      position: absolute;
+      width: 10vw;
+      z-index: 9;
+      background-color: #f1f1f1;
+      border: 1px solid #d3d3d3;
+    }
+    #formMoveheader {
+      padding: 10px;
+      cursor: move;
+      z-index: 10;
+      background-color: #2196F3;
+      color: #fff;
+      display: flex;
+      flex-direction: row;
+    }
+
+    form.fupForm{
+      display: none;
+      flex-direction: column;
+      align-items: left;
+      justify-content: center;
+    }
+
+    input.inputFormW{
+      width: 8vw;
+      height: 6vh;
+      text-indent: 10px;
+    }
+
+    .formWordsGroup{
+      margin: 0.5rem;
+    }
+
+    .btnSave{
+      background-color: cadetblue;
+      border: none;
+      margin: 5px;
+      width: 3rem;
+      border-radius: 5px;
+      font-size: 12px;
+      padding: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    div.col{
+      grid-column: 2/3;
+      margin: 1rem;
+      text-align: justify;
+    }
+
+    div.col_r{
+      grid-column: 3/4;
+      grid-row: auto;
+      height: 30vh;
+      position: sticky;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      background-color: aquamarine;
+    }
+
+    div.suggestions{
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    div.btnDb{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      margin: 1rem;
+    }
+
+    .btnReport{
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      text-transform: uppercase;
+      cursor: pointer;
+      background-color:#505050;
+      border: none;
+      font-size: 10px;
+      padding: 5px;
+      color: #fff;
+      margin-left: 2px;
+    }
+
+    .btnMyDb{
+      width: 4rem;
+      height: 2rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      background-color: cadetblue;
+      border: none;
+      border-radius: 5px;
+      font-size: 10px;
+      padding: 5px;
+      color: #fff;
+      font-weight: 600;
+      margin-left: 2px;
+    }
+
+    .btnGeneralDb{
+      width: 4rem;
+      height: 2rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      background-color: cadetblue;
+      border: none;
+      border-radius: 5px;
+      font-size: 10px;
+      padding: 5px;
+      color: #fff;
+      font-weight: 600;
+      margin-left: 2px;
+    }
+
+    div.formSuggGroup{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 1rem;
+    }
+
+    input.formSugg{
+      width: 100%;
+      height: 5vh;
+      text-indent: 20px;
+    }
+
+    div.colorGram{
+      position: fixed;
+      bottom: 0;
+      right: 0;
+    }
+
+    div.btnGram{
+      height: 60vh;
+      width: 10vw;
+      background-color: blueviolet;
+      display: none;
+    }
+
+    button.btnColor{
+      width: 5rem;
+      height: 1rem;
+      background: linear-gradient(
+        to right, red,orange,yellow,green,blue,indigo,violet
+      );
+      margin: 1rem;
+      border-radius: 5px;
+      border-color: white;
+      border-width: 1px;
+
+    }
+
+    div.btnMobile{
+      display: none;
+    }
+
+
+
+  }

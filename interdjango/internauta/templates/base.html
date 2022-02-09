@@ -1,5 +1,5 @@
 <html lang="en">
-	{% include "head.html" %}
+	{% include "components/head.html" %}
 <body>
 	<noscript>javascript needed</noscript>
     {% include "components/navbar.html" %}
@@ -7,9 +7,9 @@
         {% block content %}
 		{% endblock content %}
         
-        {% include "footer.html" %}
+        {% include "components/footer.html" %}
         
-        {% include "scripts.html" %}
+        {% include "components/scripts.html" %}
         
     </div>
 </body>

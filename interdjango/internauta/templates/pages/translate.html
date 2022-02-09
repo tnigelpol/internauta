@@ -1,0 +1,480 @@
+{% extends 'base-no-nav.html' %}
+{% load static %}
+{% block content %}
+<script>
+  function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+  function getSuggestions(word) {
+    const original = document.getElementById("original-select").value
+    const translated = document.getElementById("translated-select").value
+    if (!(original && translated)) {
+      alert("Please select both languages")
+      return
+    }
+    const data = JSON.stringify({
+      word: word.trim(),
+      original: original,
+      translated: translated,
+    })
+    const xhr = new XMLHttpRequest()
+    const method = 'POST'
+    const url = "/words/"
+    const responseType = "json"
+    xhr.responseType = responseType
+    const csrftoken = getCookie('csrftoken');
+    xhr.open(method, url)
+
+    xhr.setRequestHeader("Content-Type", "application/json")
+
+    if (csrftoken) {
+      xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    }
+    xhr.onload = function () {
+      //get list from response
+      const serverResponse = xhr.response
+      //SET GRAFICO
+      const entry = serverResponse
+      if (!isEmpty(entry)) {
+        document.getElementById("word").value = entry.original
+        document.getElementById("synonym2").value = entry.synonym
+        document.getElementById("translation2").value = entry.translated
+      } else {
+        document.getElementById("synonym2").value = "synonym"
+        document.getElementById("translation2").value = "translated"
+      }
+    }
+    xhr.send(data)
+  }
+  
+  function callword() {
+    var selly = window.getSelection();
+    var x = selly.toString();
+    var sel = x.toLowerCase();
+    // var x = selection.toString();
+    // var sel = x.toUpperCase();
+    var text = document.getElementById("texto").innerHTML;
+    // var patt = new RegExp(sel+"<\/span>", "g");
+    var patt = new RegExp("<\s*span[^>]*>([^<]*)"+sel+"<\s*\/\s*span\s*>", "g")
+    var test = patt.test(text);
+    // alert(test)
+    // $("#word").val(sel);
+    if(test!=true){
+      document.getElementById("word").value = sel;
+      document.getElementById("synonym").value = sel;
+      getSuggestions(document.getElementById("word").value)
+    }
+    else{
+      const original = document.getElementById("original-select").value
+      const translated = document.getElementById("translated-select").value
+      if (!(original && translated)) {
+        alert("Please select both languages")
+        return
+      }
+      // var so = confirm("Want to change the content?")
+      var so = console.log("Want to change the content?");
+      if (so!=false){
+        var rego = new RegExp("<\s*span[^>]*>([^<]*)"+sel+"<\s*\/\s*span\s*>", "g")
+        var yo = rego.test(text)
+        console.log(yo)
+      }
+    }
+  }
+
+  //Utile per attacchi XSS
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function handleWordSubmit() {
+    const grammar = document.getElementById("type-select").value ? document.getElementById("type-select").value : "none"
+    const original = document.getElementById("original-select").value
+    const translated = document.getElementById("translated-select").value
+    var word = document.getElementById("word").value
+    word = word.trim()
+    const synonym = document.getElementById("synonym").value
+    const translation = document.getElementById("translation").value
+    const text_id = document.getElementById("cont").getAttribute("data-text-id")
+    if (!(original && translated && word && translation)) {
+      alert("Please compile all the fields")
+      return
+    }
+    const url = "/add-entry/"
+    const method = "POST"
+    const data = JSON.stringify({
+      id: text_id,
+      word: word,
+      synonym: synonym,
+      translation: translation,
+      original: original,
+      translated: translated,
+      grammar: grammar
+    })
+    const xhr = new XMLHttpRequest()
+    const csrftoken = getCookie('csrftoken');
+    xhr.open(method, url)
+
+    xhr.setRequestHeader("Content-Type", "application/json")
+
+    if (csrftoken) {
+      xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    }
+    xhr.onload = function () {
+      // TODO: highlightText()
+      document.getElementById("word").value = ""
+      document.getElementById("synonym").value = ""
+      document.getElementById("translation").value = ""
+      textEl = document.getElementById("text-container")
+      loadText(textEl)
+    }
+    xhr.send(data)
+    return
+  }
+
+  function addsyn() {
+    var syn = document.getElementById("synonym2").value
+    // $("#word").val(sel);
+
+    document.getElementById("synonym").value = syn;
+
+  }
+
+  function addtr() {
+    var syn = document.getElementById("translation2").value
+    // $("#word").val(sel);
+
+    document.getElementById("translation").value = syn;
+
+  }
+  function showButts() {
+    const original = document.getElementById("original-select").value
+    loadButtons(original)
+  }
+  
+  function underline(typology) {
+    // console.log(typology)
+    var word = document.getElementById("word").value
+    if(word !== ""){
+    const text_id = document.getElementById("cont").getAttribute("data-text-id")
+    word = word.trim()
+    const url = "/add-underline/"
+    const method = "POST"
+    const data = JSON.stringify({
+      word: word,
+      typology: typology,
+      text_id: text_id
+    })
+    const xhr = new XMLHttpRequest()
+    const csrftoken = getCookie('csrftoken');
+    xhr.open(method, url)
+
+    xhr.setRequestHeader("Content-Type", "application/json")
+
+    if (csrftoken) {
+      xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    }
+    xhr.onload = function () {
+      textEl = document.getElementById("text-container")
+      loadText(textEl)
+    }
+    xhr.send(data)
+    return
+    }
+    else{
+      alert("No words selected")
+    }
+  }
+
+  function loadButtons(language) {
+    const xhr = new XMLHttpRequest()
+    const method = 'GET'
+    const url = `/${language}/grammar/`
+    const responseType = "json"
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function () {
+      //get list from response
+      const serverResponse = xhr.response
+      //SET GRAFICO
+      const resp = serverResponse
+
+      var finalPostStr = ""
+      for (var key in resp) {
+        var str = resp[key]
+        var str2 = "'underline(" + str + ")'"
+        finalPostStr += "<p> <button type='button' class='btn btn-primary' id='" + str + "' onClick='underline(this.id)'>" + resp[key] + "</button></p>"
+      }
+      buttEl = document.getElementById("grammar-buttons")
+      buttEl.innerHTML = finalPostStr
+    }
+    xhr.send()
+  }
+
+  
+
+  function language(){
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks the button, open the modal 
+    modal.style.display = "block"
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
+    // Make the DIV element draggable:
+    dragElement(document.getElementById("formMove"));
+
+    function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+    }
+  }
+
+  function superSave(){
+    // event.oncontextmenu
+    const col_c = document.querySelector(".col_c")
+    const circle = document.querySelector(".superSave")
+    circle.style.display = "block"
+
+    col_c.onmouseenter = function() {
+      circle.classList.add("in")
+    }
+
+
+    col_c.onmousemove = function(e) {
+      const {
+        top,
+        left,
+        width,
+        height
+      } = col_c.getBoundingClientRect()
+      const {
+        clientY,
+        clientX
+      } = e
+      if (clientX < left || clientY < top || clientX > left + width || clientY > top + height) {
+        circle.classList.remove("in")
+      }
+      circle.style.top = `${clientY - top}px`
+      circle.style.left = `${clientX - left}px`
+    };
+    rightClick()
+    function rightClick(){
+      if(event.button == "2"){
+        // alert("si")
+        var switcher = document.getElementById("translation2").value;
+            document.getElementById("translation").value = switcher;
+            setInterval(function(){
+            var dropSuper = document.querySelector(".superSave");
+            dropSuper.style.display = "none";
+            if(event.button == "1"){
+              // handleWordSubmit();
+              console.log("Parola salvata");
+            }
+            }, 5000);
+            if(switcher === "translated"){
+              document.getElementById("translation").value = " ";
+            }
+      }else{
+        /*alert(event.button)*/
+      }
+    }
+  }
+
+  function grabCollapse(){
+          var grabC = document.querySelector(".fupForm");
+          var btn = document.querySelector(".grabCollapse");
+          if (grabC.style.display === "flex"){
+              grabC.style.display = "none";
+              btn.style.transform = "rotate(180deg)";
+          } else {
+              grabC.style.display = "flex";
+              btn.style.transform = "rotate(90deg)";
+          }
+    }
+
+    function colorGram(){
+          var grabC = document.querySelector(".btnGram");
+          if (grabC.style.display === "flex"){
+              grabC.style.display = "none";
+          } else {
+              grabC.style.display = "flex";
+          }
+    }
+</script>
+<div class="rowWordo">
+  <div class="col_l">
+      <div class="logoColL">
+          <a href="/feed">
+              <img class="imgLogo" src="{% static 'img/WORDO.png' %}"/>
+          </a>
+      </div>    
+      
+      <div id="formMove">
+          <div id="formMoveheader"><h5>MOVE ME</h5>
+          <button class="grabCollapse" onclick="grabCollapse()">I</button>
+          </div>
+          <form id="fupForm" class="fupForm" name="form1" method="post">
+              <div class="formWordsGroup">
+                  <input type="text" class="inputFormW" id="word" placeholder="word" name="word"
+                      readonly>
+              </div>
+              <div class="formWordsGroup">
+                  <input type="text" class="inputFormW" id="synonym" placeholder="synonym" name="synonym">
+              </div>
+              <div class="formWordsGroup">
+                  <input type="text" class="inputFormW" id="translation" placeholder="translation" name="translation">
+              </div>
+              <label for="type-select">Selected type:</label><br>
+              <select class="selForm" name="type" id="type-select">
+                  <option value=""></option>
+                  <option value="noun">Noun</option>
+                  <option value="verb">Verb</option>
+                  <option value="adjective">Adjective</option>
+                  <option value="adverb">Adverb</option>
+                  <option value="phrasal_v">Phrasal verb</option>
+                  <option value="idiom">Idiom</option>
+                  <option value="other">Other</option>
+              </select><br>
+          </form>
+          <input type="button" name="save" class="btnSave" value="Save" id="butsave" onclick="handleWordSubmit()">
+          <input type="button" name="delete" class="btnDelW" value="Delete" id="btnDeleteW" onclick="deleteW()">
+      </div>
+  </div>
+
+  <div class="col_c" id="cont" data-text-id={{text_id}} onclick="callword()" oncontextmenu="superSave(); return false; ">
+      {% include "pages/viewTrans.html" with text_id=text_id %}
+      <span class="superSave">
+        <!-- <button class="chooseW" onclick="handleWordSubmit()">SAVE</button> -->
+      </span>
+  </div>
+
+  <div class="col_r" id="lateral-r">
+      
+      <div class="btnDb">
+          <button class="btnMyDb">My Words</button>
+          <button class="btnGeneralDb">All Words</button><button class="btnReport"><i class="fa fa-exclamation" aria-hidden="true"></i></button>
+      </div>
+      <div class="suggestions">
+          <div class="formSuggGroup">
+              <input type="text" class="formSugg" id="synonym2" placeholder="synonym" name="synonym"onclick="addsyn()" readonly>
+          </div>
+          <div class="formSuggGroup">
+              <input type="text" class="formSugg" id="translation2" placeholder="translation" name="translation" onclick="addtr()">
+          </div>
+          <div class="btnMobile"></div>
+      </div>
+  </div>
+
+  <div class="colorGram">
+      <div id="grammar-buttons"  class="btnGram"></div>
+      <button class="btnColor" onclick="colorGram()"></button>
+  </div>
+  
+
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Languages</h2>
+    </div>
+    <div class="modal-body">
+      <div class="selColL">
+          <label for="original-select">Original lang:</label><br>
+          <select class="selForm" name="original" id="original-select" onchange="showButts()">
+              <option value="">--Please choose an option--</option>
+              <option value="ita">Italian</option>
+              <option value="eng">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+          </select><br>
+
+
+          <label for="translated-select">Translated lang:</label><br>
+          <select class="selForm" name="translated" id="translated-select">
+              <option value="">--Please choose an option--</option>
+              <option value="ita">Italian</option>
+              <option value="eng">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+          </select><br>
+          <!-- <span class="close">&times;</span> -->
+          <span class="close">SAVE</span>
+      </div>
+    </div>
+    <!-- <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div> -->
+  </div>
+
+</div>
+
+{% endblock content %}

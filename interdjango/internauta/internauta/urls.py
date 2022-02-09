@@ -22,6 +22,8 @@ from nauta.views import (
     text_create_view,
     text_edit_view,
     text_visualize_view,
+    # text_tr_view,
+    # text_visualizetr_view,
     add_entry_view,
     retrieve_word_view,
     retrieve_grammars_view,
@@ -36,7 +38,7 @@ from nauta.views import (
     index,
     feed,
     search,
-    update, 
+    update,
     )
 from accounts.views import (
     login_view,
@@ -55,15 +57,17 @@ urlpatterns = [
     path('logout/', logout_view),
     path('register/', register_view),
     path('create/', text_create_view),
-    #APIs
+    # APIs
     re_path(r'profiles?/', include('profiles.urls')),
     re_path(r'api/profiles?/', include('profiles.api.urls')),
     path('<int:text_id>/view/', views.text_visualize_view, name='view'),
     path('<int:text_id>/edit/', views.text_edit_view, name='edit'),
+    # path('<int:text_id>/tr/', views.text_tr_view, name='tr'),
+    # path('<int:text_id>/viewTrans/', views.text_visualizetr_view, name='viewtr'),
     path('<int:text_id>/delete/', views.text_delete, name='delete'),
-    path('<int:text_id>/visualize/', text_view,  name='visualize'),
+    path('<int:text_id>/visualize/', text_view, name='visualize'),
     path('add-entry/', add_entry_view),
-    path('words/', retrieve_word_view),
+    path('words/', views.retrieve_word_view),
     path('<str:lang>/grammar/', retrieve_grammars_view),
     path('add-underline/', add_underline_view),
     path('feed/', user_feed_view, name="home-view"),
@@ -72,6 +76,6 @@ urlpatterns = [
 
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

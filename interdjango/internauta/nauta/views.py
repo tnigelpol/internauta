@@ -7,22 +7,23 @@ from django.db.models import Count, Q
 
 from .forms import TextForm
 from .models import Text, Word, Dictionary, Language, Grammar, Underline, Category, TextView
-from .serializers import TextSerializer
+from .serializers import DictionarySerializer, TextSerializer
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 # Create your views here.
+
 def index(request):
     object_list = Text.objects.filter(firstchapter=True, nocopy=True)[:3]
     latest = Text.objects.order_by('-timestamp')
     page = Paginator(latest, 3)
 
-    if request.method == "POST":
-        email = request.POST["email"]
-        new_signup = Signup()
-        new_signup.email = email
-        new_signup.save()
+    # if request.method == "POST":
+    #     email = request.POST["email"]
+    #     new_signup = Signup()
+    #     new_signup.email = email
+    #     new_signup.save()
 
     context = {
         'object_list': object_list,
@@ -43,7 +44,7 @@ def search(request):
     context = {
         'texty_searchy': texty_searchy
     }
-    return render(request, 'search_results.html', context)
+    return render(request, 'pages/search_results.html', context)
 
 def get_category_count():
     queryset = Text.objects.values('categories__name').annotate(Count('categories__name'))
@@ -52,7 +53,7 @@ def get_category_count():
 def feed(request):
     category_count = get_category_count()
     most_recent = Text.objects.order_by('-timestamp')[:3]
-    text_list = Text.objects.filter(firstchapter=True, nocopy=True)
+    text_list = Text.objects.filter(firstchapter=True)
     paginator = Paginator(text_list, 9)
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
@@ -91,7 +92,7 @@ def update(request, text_id, *args, **kwargs):
         'btn_label': 'Inserisci',
         'text_id': text_id
     }
-    return render(request, "text_update.html", context)
+    return render(request, "pages/text_update.html", context)
 
 
 def text_create_view(request, *args, **kwargs):
@@ -128,7 +129,8 @@ def text_visualize_view(request, text_id, *args, **kwargs):
         dd[str(i)] = {
             'word': d.word.sentence,
             'translation': d.translation.sentence,
-            'synonym': d.synonym
+            'synonym' : d.synonym,
+            'grammar' : d.grammar
         }
         i+=1
     us = obj.underlines.all()
@@ -185,9 +187,8 @@ def add_entry_view(request, *args, **kwargs):
             orig.save()
         else:
             orig = qs.first()
+            
         qs = Language.objects.filter(name = data['translated'])
-
-
         if not qs.exists():
             trans = Language(name=data['translated'])
             trans.save()
@@ -240,7 +241,14 @@ def text_edit_view(request, text_id, *args, **kwargs):
             return JsonResponse({}, status=401)
         return redirect(settings.LOGIN_URL)
     context = { 'text_id': text_id}
-    return render(request, 'pages/edit.html', context)
+    qs = Text.objects.filter(id=text_id)
+    
+    if qs.exists():
+        return render(request, 'pages/edit.html', context)
+    else:
+        context = {'message': 'the text selected does not exists'}
+        return render(request, 'pages/error.html', context)
+
 
 def find_word(word, translatedLanguage):
     result = []
@@ -332,7 +340,7 @@ def retrieve_word_view(request, *args, **kwargs):
                 
     else:
         return Response({}, status=404)
-
+        
 @api_view(['POST'])
 def add_underline_view(request, *args, **kwargs):
     data = request.data or None
@@ -364,8 +372,8 @@ def add_underline_view(request, *args, **kwargs):
 
 
 def homepage_view(request, *args, **kwargs):
-    #context = { 'text_id': text_id}
-    return render(request, 'pages/home.html')
+    # context = { 'text_id': text_id}
+    return render(request, 'home.html')
 
 def get_paginated_queryset_response(qs, request):
     paginator = PageNumberPagination()
@@ -403,6 +411,20 @@ def text_delete(request, text_id):
         return Response({"message" : "this post does not exists"}, status=404)
     if text_to_delete.user == user:
         obj = text_to_delete.delete()
+    else:
+        return Response({"message" : "this is not your post to delete"}, status=404)
+    return redirect("/feed")
+
+@api_view(['GET'])
+def words_delete(request, text_id, orig, transl, syn):
+    words_to_delete = Text.objects.filter(id = text_id)[0]
+    user = request.user
+    if not user.is_authenticated:
+        return Response({"message" : "you are not authenticated"}, status=401)
+    if words_to_delete is None:
+        return Response({"message" : "this post does not exists"}, status=404)
+    if words_to_delete.user == user:
+        obj = words_to_delete.delete()
     else:
         return Response({"message" : "this is not your post to delete"}, status=404)
     return redirect("/feed")

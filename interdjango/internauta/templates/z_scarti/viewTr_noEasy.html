@@ -1,0 +1,138 @@
+<!--Pagina per la visualizzazione finale del testo-->
+{% load static %}
+{% block content %}
+<div id="text-container" data-text-id={{text_id}}>
+    {% csrf_token %}
+</div>
+
+<script>
+   
+   
+    textEl = document.getElementById("text-container")
+    textid = textEl.getAttribute("data-text-id")
+    function loadText() {
+         
+        const xhr = new XMLHttpRequest()
+        const method = 'GET'
+        const url = `/${textid}/view/`
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function(){
+            $("[data-toggle='popover']").popover(); 
+            //get list from response
+            const serverResponse = xhr.response
+                //SET GRAFICO
+            const data = serverResponse
+
+            textEl.innerHTML = formatText(data)
+            }
+        xhr.send()
+        }
+    function formatText(data){
+        var finalPostStr = ""
+        finalPostStr += "<div class='titles_stylo'><h2>" + data.title + "</h2>" + 
+                        "<h5>" + data.subtitle + "</h5>" + 
+                        "<h4>" + data.author + "</h4> </div>" +
+                        "<div id='demo'></div>" +
+                        "<div id='texto' class='text_stylo'>" 
+                        
+                        
+        var text = data.text
+        var ref = data.reference
+        var und = data.underlines
+        var i = 0;
+        var words = [];
+        var synonyms = [];
+        var translations = [];
+        // alert(text)
+        for (var key in ref){
+            
+                words[i] = ref[key].word;
+                synonyms[i] = ref[key].synonym;
+                translations[i] = ref[key].translation;
+                    i++;  
+                    // text = text.replace(
+                    //     new RegExp(" " + words[j] , "g"),
+                    //     " " +"<span class='ww' data-content='S.: "
+                    //     + synonyms[j] +
+                    //     " | T.: " + translations[j] +
+                    //     "' style='font-style: italic;' data-toggle='popover'>" 
+                    //     + words[j] + "</span>"
+                    // ) 
+                // console.log(words, synonyms, translations)
+            }
+        // alert(words.length)
+        var y;
+        var text = text + " ";
+        var patt15 = /^(?:\S+\s+\n?){1,15}/g;
+        var patt2 = /\S+/g;
+        var match = text.match(patt2).length;
+        var loop = match / 15;
+        var j =0;
+        for(y=0; y<loop; y++){
+            
+                var res = text.match(patt15);
+                // j = 0;
+                // for(j; j<words.length; j++){
+                //     var w = words[j];
+                //     var re = new RegExp(w, "g");
+                //     var tf = res.replace(re, "ciao");
+                // }
+                var newInput = document.createElement("input");
+                newInput.setAttribute("id", "translation");
+                
+                finalPostStr += "<span>" + res + "</span>" + "<br>"
+                var text = text.replace(res, "");
+                finalPostStr += newInput.outerHTML + "<br>" 
+        }
+        // var j = 0;
+        //     for(j; j<words.length; j++){
+        //         text = text.replace(
+        //                         new RegExp(" " + words[j] , "g"),
+        //                         " " +"<span class='ww' data-content='S.: "
+        //                         + synonyms[j] +
+        //                         " | T.: " + translations[j] +
+        //                         "' style='font-style: italic;' data-toggle='popover'>" 
+        //                         + words[j] + "</span>"
+        //                     ) 
+        //     }
+        // for (var key in ref){
+            
+        //     words[i] = ref[key].word;
+        //     synonyms[i] = ref[key].synonym;
+        //     translations[i] = ref[key].translation;
+        //         i++;  
+        //         text = text.replace(
+        //             new RegExp(" " + words[j] , "g"),
+        //             " " +"<span class='ww' data-content='S.: "
+        //             + synonyms[j] +
+        //             " | T.: " + translations[j] +
+        //             "' style='font-style: italic;' data-toggle='popover'>" 
+        //             + words[j] + "</span>"
+        //         ) 
+        //     console.log(words, synonyms, translations)
+        // } 
+        
+        
+
+        // finalPostStr += text
+        finalPostStr += "</div>"
+        return finalPostStr
+    }
+        loadText(textEl)
+</script>
+<!-- var j = 0;
+            for(j; j<words.length; j++){
+                
+           text = text.replace(
+                        new RegExp(" " + words[j] , "g"),
+                        " " +"<span class='ww' data-content='S.: "
+                        + synonyms[j] +
+                        " | T.: " + translations[j] +
+                        "' style='font-style: italic;' data-toggle='popover'>" 
+                        + words[j] + "</span>"
+                    ) 
+                 }-->
+
+{% endblock content %}

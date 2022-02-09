@@ -1,0 +1,115 @@
+{% load static %}
+{% block content %}
+<div id="text-container" class="textCont" data-text-id={{text_id}}>
+    {% csrf_token %}
+</div>
+
+<script>
+    textEl = document.getElementById("text-container")
+    textid = textEl.getAttribute("data-text-id")
+    function loadText() {
+         
+        const xhr = new XMLHttpRequest()
+        const method = 'GET'
+        const url = `/${textid}/view/`
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function(){
+            // $("[data-toggle='popover']").popover(); 
+            //get list from response
+            const serverResponse = xhr.response
+                //SET GRAFICO
+            const data = serverResponse
+
+            textEl.innerHTML = formatText(data)
+            }
+        xhr.send()
+        }
+    function formatText(data){
+        var finalPostStr = ""
+        finalPostStr += "<div class='titles_stylo'><h1>" + data.title + "</h1><br>" + 
+                        "<h5><i>" + data.subtitle + "</i></h5><br>" + 
+                        "<h3>" + data.author + "</h3> </div>" +
+                        "<div id='texto' class='text-stylo'>" + "<p>"
+                        
+        var text = data.text
+        var ref = data.reference
+        var und = data.underlines
+        // var x = text.toString();
+        // var text = x.toLowerCase();
+        text = text.replace(
+            new RegExp("\n", "g"),
+            "<br>"
+        )
+        var patt = new RegExp('^(?:\\S+\\s+\\n?){1,15}', "gi")
+        var i;
+        const res = text;
+        var res1 = res
+        var match = res1.match(/\S+/g).length;
+        var loop = match / 10;
+        // //(\b\w+\b)(?<!</?[^>]*)
+        for(i=0;i<loop; i++){
+            
+            var res2 = patt.exec(res1)
+            // res1 = res1.replace(patt, " ")
+            console.log(res2.riga)
+            alert(res2.riga)
+            res1 = res1.replace(res2, "")
+            
+            // console.log(res1)
+            // console.log(res2)
+            // res = res.replace(res1, " ")
+            // text = patt.exec(text)
+        }
+        
+        for (var key in ref){
+            const re = new RegExp('[^:]\\b'+ref[key].word + '\\b' , "gi")
+            const syn = ref[key].synonym ? ref[key].synonym : "none"
+            text = text.replace(
+                re,
+                " " + "<span class='ww' id='popover' data-content='S.:"
+                 + syn +
+                  " | T.:" + ref[key].translation +
+                  "' style='font-style: italic;'>"
+                  + " " +  ref[key].word  + " " + "</span>" + " "
+            )
+            // var patt = ""
+            // text = text.replace(
+            //     " " + ref[key].word,
+
+            //     " " + "<span class='ww' id='popover' data-content='S:"
+            //      + ref[key].synonym +
+            //       " | T:" + ref[key].translation +
+            //       "' style='font-style: italic;'>" + " " 
+            //       + ref[key].word + " " + "</span>" + " "
+            // )
+        }
+
+        for (var key in und){
+            const re = new RegExp('[^:]\\b'+und[key].word + '\\b' , "gi")
+            var str = und[key].grammar.toLowerCase().replace(new RegExp(" ", "g"), "")
+            
+            text = text.replace(
+                re,
+                " " + "<u class='" + str  +"'>" +  und[key].word + "</u>" + " "
+            )
+            
+            // let wordo = "/\b" + und[key].word + "\b/g"
+            // text = text.replace(wordo,
+            //   " " +  "<u class='" + str  +"'>" + " " + wordo +  "</u>" + " " 
+        //     // )
+        // }
+
+            // text = text.replace(" " + und[key].word,
+            //   " " +  "<u class='" + str  +"'>" + " " + und[key].word + " " + "</u>" + " " 
+            // )
+        }
+
+        finalPostStr += text
+        finalPostStr += "</p>" + "</div>"               
+        return finalPostStr
+    }
+        loadText(textEl)
+</script>
+{% endblock content %}

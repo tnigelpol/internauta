@@ -1,7 +1,7 @@
 from django import forms
-from nauta.models import Text, Category
+from .models import Text, Category
 
-MAX_LENGTH=50
+MAX_LENGTH= 100
 class TextForm(forms.ModelForm):
     class Meta:
         model = Text

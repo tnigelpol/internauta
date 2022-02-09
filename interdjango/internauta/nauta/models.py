@@ -63,8 +63,9 @@ class Text(models.Model):
     text = models.TextField(blank=False, null=False)
     reference = models.ManyToManyField(Dictionary, related_name="words", blank=True)
     underlines= models.ManyToManyField("Underline", blank=True)
+    translations = models.ManyToManyField("Translations", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField("Category")
     objects = TextManager()
     chapter = models.CharField(null=True, max_length=1000)
     firstchapter= models.BooleanField()
@@ -112,3 +113,10 @@ class Underline(models.Model):
 
     def __str__(self):
         return 'Underline(' + str(self.gram) + ', ' + str(self.ref) + ')'
+
+class Translations(models.Model):
+    trans = models.CharField(primary_key=True, max_length=250)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Translations(' + str(self.trans) + ')'

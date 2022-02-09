@@ -1,0 +1,105 @@
+<!--Pagina per la visualizzazione finale del testo-->
+{% load static %}
+{% block content %}
+<div id="text-container" data-text-id={{text_id}}>
+    {% csrf_token %}
+</div>
+
+<script>
+   
+   
+    textEl = document.getElementById("text-container")
+    textid = textEl.getAttribute("data-text-id")
+    function loadText() {
+         
+        const xhr = new XMLHttpRequest()
+        const method = 'GET'
+        const url = `/${textid}/view/`
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function(){
+            $("[data-toggle='popover']").popover(); 
+            //get list from response
+            const serverResponse = xhr.response
+                //SET GRAFICO
+            const data = serverResponse
+
+            textEl.innerHTML = formatText(data)
+            }
+        xhr.send()
+        }
+    function formatText(data){
+        var finalPostStr = ""
+        finalPostStr += "<div class='titles_stylo'><h2>" + data.title + "</h2>" + 
+                        "<h5>" + data.subtitle + "</h5>" + 
+                        "<h4>" + data.author + "</h4> </div>" + 
+                        "<div id='texto' class='text_stylo'>" 
+                        //+ text.text + "</div>" 
+                        
+        var text = data.text
+        var ref = data.reference
+        var und = data.underlines
+        text = text.replace(
+            new RegExp("\n", "g"),
+            "<br>"
+        )
+        for (var key in ref){
+            // var nope = new RegExp("[^>]" + ref[key].word , "g")
+            // if (!nope)
+            text = text.replace(
+                new RegExp(" " + ref[key].word , "g"),
+                " " +"<span class='ww' data-content='S.: "
+                 + ref[key].synonym +
+                  " | T.: " + ref[key].translation +
+                  "' style='font-style: italic;' data-toggle='popover'>" 
+                  + ref[key].word + "</span>"
+            )
+        }
+        //crea una nuova regex
+        // for (var key in ref){
+        //     text = text.replace(
+        //         new RegExp(" " + ref[key].word + " ", "g").ignoreCase,
+        //         " " +"<span data-content='S.: "
+        //          + ref[key].synonym +
+        //           " | T.: " + ref[key].translation +
+        //           "' style='font-style: italic;' data-toggle='popover'>" 
+        //           + " " + ref[key].word + " " + "</span>")
+        // }                    
+        for (var key in und){
+            var str = und[key].grammar.toLowerCase().replace(new RegExp(" ", "g"), "_")
+            
+            text = text.replace(
+                new RegExp(" " + und[key].word , "g"),
+                " " +
+                "<u class='" + str  +"'>" +  und[key].word + "</u>"
+            )
+        }
+
+        finalPostStr += text
+        finalPostStr += "</div>"               
+        return finalPostStr
+    }
+        loadText(textEl)
+</script>
+<!-- {% for text in queryset %}
+<div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+    {% if text.previous_post %}
+    <a href="{{ text.previous_post.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">
+        <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+        <div class="text"><strong class="text-primary">Previous Post</strong>
+          <h6>{{ text.previous_post.title }}</h6>
+        </div>
+    </a>
+    {% endif %}
+    {% if text.next_post %}
+    <a href="{{ text.next_post.get_absolute_url }}" class="next-post text-right d-flex align-items-center justify-content-end">
+        <div class="text"><strong class="text-primary">Next Post </strong>
+          <h6>{{ text.next_post.title }}</h6>
+        </div>
+        <div class="icon next"><i class="fa fa-angle-right">   </i></div>
+    </a>
+    {% endif %}
+  </div>
+{% endfor%} -->
+{% endblock content %}

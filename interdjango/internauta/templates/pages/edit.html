@@ -48,13 +48,39 @@
     }
     xhr.send(data)
   }
-
+  
   function callword() {
-    var sel = window.getSelection();
+    var selly = window.getSelection();
+    var x = selly.toString();
+    var sel = x.toLowerCase();
+    // var x = selection.toString();
+    // var sel = x.toUpperCase();
+    var text = document.getElementById("texto").innerHTML;
+    // var patt = new RegExp(sel+"<\/span>", "g");
+    var patt = new RegExp("<\s*span[^>]*>([^<]*)"+sel+"<\s*\/\s*span\s*>", "g")
+    var test = patt.test(text);
+    // alert(test)
     // $("#word").val(sel);
-
-    document.getElementById("word").value = sel;
-    getSuggestions(document.getElementById("word").value)
+    if(test!=true){
+      document.getElementById("word").value = sel;
+      document.getElementById("synonym").value = sel;
+      getSuggestions(document.getElementById("word").value)
+    }
+    else{
+      const original = document.getElementById("original-select").value
+      const translated = document.getElementById("translated-select").value
+      if (!(original && translated)) {
+        alert("Please select both languages")
+        return
+      }
+      // var so = confirm("Want to change the content?")
+      var so = console.log("Want to change the content?");
+      if (so!=false){
+        var rego = new RegExp("<\s*span[^>]*>([^<]*)"+sel+"<\s*\/\s*span\s*>", "g")
+        var yo = rego.test(text)
+        console.log(yo)
+      }
+    }
   }
 
   //Utile per attacchi XSS
@@ -83,7 +109,7 @@
     const synonym = document.getElementById("synonym").value
     const translation = document.getElementById("translation").value
     const text_id = document.getElementById("cont").getAttribute("data-text-id")
-    if (!(original && translated && word && synonym && translation)) {
+    if (!(original && translated && word && translation)) {
       alert("Please compile all the fields")
       return
     }
@@ -140,9 +166,11 @@
     const original = document.getElementById("original-select").value
     loadButtons(original)
   }
+  
   function underline(typology) {
-    console.log(typology)
+    // console.log(typology)
     var word = document.getElementById("word").value
+    if(word !== ""){
     const text_id = document.getElementById("cont").getAttribute("data-text-id")
     word = word.trim()
     const url = "/add-underline/"
@@ -169,7 +197,12 @@
     }
     xhr.send(data)
     return
+    }
+    else{
+      alert("No words selected")
+    }
   }
+
   function loadButtons(language) {
     const xhr = new XMLHttpRequest()
     const method = 'GET'
@@ -194,98 +227,254 @@
     }
     xhr.send()
   }
+
+  
+
+  function language(){
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks the button, open the modal 
+    modal.style.display = "block"
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
+    // Make the DIV element draggable:
+    dragElement(document.getElementById("formMove"));
+
+    function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+    }
+  }
+
+  function superSave(){
+    // event.oncontextmenu
+    const col_c = document.querySelector(".col_c")
+    const circle = document.querySelector(".superSave")
+    circle.style.display = "block"
+
+    col_c.onmouseenter = function() {
+      circle.classList.add("in")
+    }
+
+
+    col_c.onmousemove = function(e) {
+      const {
+        top,
+        left,
+        width,
+        height
+      } = col_c.getBoundingClientRect()
+      const {
+        clientY,
+        clientX
+      } = e
+      if (clientX < left || clientY < top || clientX > left + width || clientY > top + height) {
+        circle.classList.remove("in")
+      }
+      circle.style.top = `${clientY - top}px`
+      circle.style.left = `${clientX - left}px`
+    };
+    rightClick()
+    function rightClick(){
+      if(event.button == "2"){
+        // alert("si")
+        var switcher = document.getElementById("translation2").value;
+            document.getElementById("translation").value = switcher;
+            setInterval(function(){
+            var dropSuper = document.querySelector(".superSave");
+            dropSuper.style.display = "none";
+            if(event.button == "1"){
+              // handleWordSubmit();
+              console.log("Parola salvata");
+            }
+            }, 5000);
+            if(switcher === "translated"){
+              document.getElementById("translation").value = " ";
+            }
+      }else{
+        /*alert(event.button)*/
+      }
+    }
+  }
+
+  function grabCollapse(){
+          var grabC = document.querySelector(".fupForm");
+          var btn = document.querySelector(".grabCollapse");
+          if (grabC.style.display === "flex"){
+              grabC.style.display = "none";
+              btn.style.transform = "rotate(180deg)";
+          } else {
+              grabC.style.display = "flex";
+              btn.style.transform = "rotate(90deg)";
+          }
+    }
+
+    function colorGram(){
+          var grabC = document.querySelector(".btnGram");
+          if (grabC.style.display === "flex"){
+              grabC.style.display = "none";
+          } else {
+              grabC.style.display = "flex";
+          }
+    }
 </script>
-<div class="row">
-  <div class="col"
-    style="width: 15%; height: 100%; top: 0; left: 0; position: fixed; overflow: auto; background-color: #363636;">
-    
-    <label for="original-select" style="margin-top: 10%; color: white;">Original language:</label>
-    <select class="form-control" name="original" id="original-select" onchange="showButts()">
-      <option value="">--Please choose an option--</option>
-      <option value="ita">Italian</option>
-      <option value="eng">English</option>
-      <option value="de">German</option>
-      <option value="es">Spanish</option>
-      <option value="fr">French</option>
-      <option value="prt">Portuguese</option>
-    </select>
-    <label for="translated-select" style="color: white;">Translated language:</label>
-
-    <select class="form-control" name="translated" id="translated-select">
-      <option value="">--Please choose an option--</option>
-      <option value="ita">Italian</option>
-      <option value="eng">English</option>
-      <option value="de">German</option>
-      <option value="es">Spanish</option>
-      <option value="fr">French</option>
-      <option value="prt">Portuguese</option>
-    </select>
-    <label for="type-select" style="color: white;">Selected type:</label>
-
-    <select class="form-control" name="type" id="type-select">
-      <option value="">--Optional--</option>
-      <option value="noun">Noun</option>
-      <option value="verb">Verb</option>
-      <option value="adjective">Adjective</option>
-      <option value="adverb">Adverb</option>
-      <option value="phrasal_v">Phrasal verb</option>
-      <option value="idiom">Idiom</option>
-      <option value="other">Other</option>
-    </select>
-
-    <a href="/feed">
-      <img class="img_logo" src="{% static 'img/INTERLINGO_logo.png' %}" style="border: 0px solid; border-radius: 50%; margin-top: 5vh; margin-left: 3vw; width: 5rem; background-color: white;"/>
-    </a>
-    
-
-    <form id="fupForm" name="form1" method="post" style="width: 100%; margin-top: 20%;">
-      <div class="form-group" style="margin-top: 10px;">
-        <!-- <label for="word" style="font-size: small; margin-bottom: 0;">WORD:</label> -->
-        <input type="text" class="form-control" id="word" placeholder="word" name="word"
-          style="text-align: center; height: 50px;">
+<div class="rowWordo">
+  <div class="col_l">
+      <div class="logoColL">
+          <a href="/feed">
+              <img class="imgLogo" src="{% static 'img/WORDO.png' %}"/>
+          </a>
+      </div>    
+      
+      <div id="formMove">
+          <div id="formMoveheader"><h5>MOVE ME</h5>
+          <button class="grabCollapse" onclick="grabCollapse()">I</button>
+          </div>
+          <form id="fupForm" class="fupForm" name="form1" method="post">
+              <div class="formWordsGroup">
+                  <input type="text" class="inputFormW" id="word" placeholder="word" name="word"
+                      readonly>
+              </div>
+              <div class="formWordsGroup">
+                  <input type="text" class="inputFormW" id="synonym" placeholder="synonym" name="synonym">
+              </div>
+              <div class="formWordsGroup">
+                  <input type="text" class="inputFormW" id="translation" placeholder="translation" name="translation">
+              </div>
+              <label for="type-select">Selected type:</label><br>
+              <select class="selForm" name="type" id="type-select">
+                  <option value=""></option>
+                  <option value="noun">Noun</option>
+                  <option value="verb">Verb</option>
+                  <option value="adjective">Adjective</option>
+                  <option value="adverb">Adverb</option>
+                  <option value="phrasal_v">Phrasal verb</option>
+                  <option value="idiom">Idiom</option>
+                  <option value="other">Other</option>
+              </select><br>
+          </form>
+          <input type="button" name="save" class="btnSave" value="Save" id="butsave" onclick="handleWordSubmit()">
+          <input type="button" name="delete" class="btnDelW" value="Delete" id="btnDeleteW" onclick="deleteW()">
       </div>
-      <div class="form-group">
-        <!-- <label for="synonym" style="font-size: small; margin-bottom: 0;">SYNONYM:</label> -->
-        <input type="text" class="form-control" id="synonym" placeholder="synonym" name="synonym"
-          style="text-align: center; height: 50px; background-color: #FAF7EE;">
-      </div>
-      <div class="form-group">
-        <!-- <label for="translation" style="font-size: small; margin-bottom: 0;">TRANSLATION:</label> -->
-        <input type="text" class="form-control" id="translation" placeholder="translation" name="translation"
-          style="text-align: center; height: 50px; background-color: #F3E3BF;">
-      </div>
-      <input type="button" name="save" class="btn btn-primary" value="Save to database" id="butsave"
-        onclick="handleWordSubmit()">
-    </form>
-    <div id="success"
-      style="font-size:10px; display:none; width: 30px; height: 30px; float: right; margin-right: 50px; margin-bottom: 50px; margin-top: -50px; background-color:limegreen; color: honeydew;">
-      <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> -->
-    </div>
   </div>
 
-  <div class="col" style="width: 100%; height: 100%; margin-left: 8%; top: 0; text-align: justify;
-    text-justify: inter-word;" id="cont" data-text-id={{text_id}}>
-    <div class="text" id="text-div" onclick="callword()">
+  <div class="col_c" id="cont" data-text-id={{text_id}} onclick="callword()" oncontextmenu="superSave(); return false; ">
       {% include "pages/view.html" with text_id=text_id %}
-    </div>
+      <span class="superSave">
+        <!-- <button class="chooseW" onclick="handleWordSubmit()">SAVE</button> -->
+      </span>
   </div>
 
-  <div class="col" id="lateral-r"
-    style="width: 20%; height: 100%; top: 0; right: 0; position: fixed; overflow: auto; background-color: #363636;">
-    <div style="margin-top: 10%;">
-      <div class="form-group">
-        <!-- <label for="synonym" style="font-size: small; margin-bottom: 0;">SYNONYM:</label> -->
-        <input type="text" class="form-control" id="synonym2" placeholder="synonym" name="synonym"
-          style="text-align: center; height: 50px; background-color: #FAF7EE;" onclick="addsyn()" readonly>
+  <div class="col_r" id="lateral-r">
+      
+      <div class="btnDb">
+          <button class="btnMyDb">My Words</button>
+          <button class="btnGeneralDb">All Words</button><button class="btnReport"><i class="fa fa-exclamation" aria-hidden="true"></i></button>
       </div>
-      <div class="form-group">
-        <!-- <label for="translation" style="font-size: small; margin-bottom: 0;">TRANSLATION:</label> -->
-        <input type="text" class="form-control" id="translation2" placeholder="translation" name="translation"
-          style="text-align: center; height: 50px; background-color: #F3E3BF;" onclick="addtr()" readonly>
+      <div class="suggestions">
+          <div class="formSuggGroup">
+              <input type="text" class="formSugg" id="synonym2" placeholder="synonym" name="synonym"onclick="addsyn()" readonly>
+          </div>
+          <div class="formSuggGroup">
+              <input type="text" class="formSugg" id="translation2" placeholder="translation" name="translation" onclick="addtr()">
+          </div>
+          <div class="btnMobile"></div>
+      </div>
+  </div>
+
+  <div class="colorGram">
+      <div id="grammar-buttons"  class="btnGram"></div>
+      <button class="btnColor" onclick="colorGram()"></button>
+  </div>
+  
+
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Languages</h2>
+    </div>
+    <div class="modal-body">
+      <div class="selColL">
+          <label for="original-select">Original lang:</label><br>
+          <select class="selForm" name="original" id="original-select" onchange="showButts()">
+              <option value="">--Please choose an option--</option>
+              <option value="ita">Italian</option>
+              <option value="eng">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+          </select><br>
+
+
+          <label for="translated-select">Translated lang:</label><br>
+          <select class="selForm" name="translated" id="translated-select">
+              <option value="">--Please choose an option--</option>
+              <option value="ita">Italian</option>
+              <option value="eng">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+          </select><br>
+          <!-- <span class="close">&times;</span> -->
+          <span class="close">SAVE</span>
       </div>
     </div>
-    <div id="grammar-buttons"></div>
+    <!-- <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div> -->
   </div>
+
 </div>
 
 {% endblock content %}

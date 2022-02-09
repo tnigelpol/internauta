@@ -1,0 +1,87 @@
+{% load static %}
+{% block content %}
+<div id="text-container" class="textCont" data-text-id={{text_id}}>
+    {% csrf_token %}
+</div>
+
+<script>
+    textEl = document.getElementById("text-container")
+    textid = textEl.getAttribute("data-text-id")
+    function loadText() {
+         
+        const xhr = new XMLHttpRequest()
+        const method = 'GET'
+        const url = `/${textid}/viewTrans/`
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function(){
+            // $("[data-toggle='popover']").popover(); 
+            //get list from response
+            const serverResponse = xhr.response
+                //SET GRAFICO
+            const data = serverResponse
+
+            textEl.innerHTML = formatText(data)
+            }
+        xhr.send()
+        }
+    function formatText(data){
+        var finalPostStr = ""
+        finalPostStr += "<div class='titles_stylo'><h1>" + data.title + "</h1><br>" + 
+                        "<h5><i>" + data.subtitle + "</i></h5><br>" + 
+                        "<h3>" + data.author + "</h3> </div>" +
+                        "<div id='texto' class='text-stylo' style='text-align=justify;'>" + "<p>"
+                        
+        var text = data.text
+        var ref = data.reference
+        var und = data.underlines
+        var trans = data.translations
+        text = text.replace(
+            new RegExp("\n", "g"),
+            "<br>"
+        )
+
+        var point = text.match(new RegExp("\\.", "g")).length;
+        alert(point)
+        text = text.replace(
+            new RegExp("\\.", "g"),
+            ".<br>" + 
+            "<textarea class='transInput' id='0' type='input' value='ciao' rows='4' cols='50'>ciao</textarea>" +
+            "<br><br>"
+        )
+        var x = document.getElementsByTagName("textarea");
+        
+        
+        alert(x)
+        
+        for (var key in ref){
+            const re = new RegExp('[^:]\\b'+ref[key].word + '\\b' , "gi")
+            const syn = ref[key].synonym ? ref[key].synonym : "none"
+            text = text.replace(
+                re,
+                " " + "<span class='ww' id='popover' data-content='S.:"
+                 + syn +
+                  " | T.:" + ref[key].translation +
+                  "' style='font-style: italic;'>"
+                  + " " +  ref[key].word  + " " + "</span>" + " "
+            )
+        }
+
+        for (var key in und){
+            const re = new RegExp('[^:]\\b'+und[key].word + '\\b' , "gi")
+            var str = und[key].grammar.toLowerCase().replace(new RegExp(" ", "g"), "")
+            
+            text = text.replace(
+                re,
+                " " + "<u class='" + str  +"'>" +  und[key].word + "</u>" + " "
+            )
+        }
+
+        finalPostStr += text
+        finalPostStr += "</p>" + "</div>"               
+        return finalPostStr
+    }
+        loadText(textEl)
+</script>
+{% endblock content %}
