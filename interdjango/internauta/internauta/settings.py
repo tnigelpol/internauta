@@ -27,9 +27,9 @@ django_heroku.settings(locals())
 SECRET_KEY = '&&i-_@dpn3+l^-$jq1dj7p4$pt=_c^^6$68m_kak&jrm4bqv00'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['weavedtextbeta.herokuapp.com']
 LOGIN_URL = "/login"
 GRAMMAR_TYPES = [
     "PRESENT", 
@@ -48,6 +48,8 @@ GRAMMAR_TYPES = [
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,9 +63,12 @@ INSTALLED_APPS = [
     'profiles'
 ]
 
+WHITENOISE_USE_FINDERS = True
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -139,7 +144,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
