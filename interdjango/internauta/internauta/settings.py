@@ -145,9 +145,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
-VENV_PATH = os.path.dirname(BASE_DIR)
-STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
-MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
+# STATIC_URL = '/static/'
+# MEDIA_URL = '/media/'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]
+# VENV_PATH = os.path.dirname(BASE_DIR)
+# STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
+# MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
